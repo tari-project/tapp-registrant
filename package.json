@@ -4,7 +4,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc --project tsconfig.build.json"
+    "build": "tsc --project tsconfig.build.json",
+    "register-tapp": "npx tsx src/scripts/register-tapp.ts"
   },
   "author": "",
   "license": "ISC",
@@ -23,6 +24,7 @@
     "@types/node": "^20.14.2",
     "dotenv": "^16.4.5",
     "octokit": "^4.0.2",
+    "superstruct": "^1.0.4",
     "ts-node": "^10.9.2",
     "tsx": "^4.11.2",
     "typescript": "^5.4.5"
