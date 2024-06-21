@@ -15,5 +15,6 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true
   },
-  "exclude": ["dist", "test", "jest.config.ts"]
+  "exclude": ["dist", "test", "jest.config.ts", "tapplet.manifest.json"],
+  "include": ["./src/**/*"]
 }

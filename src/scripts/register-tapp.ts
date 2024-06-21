@@ -7,10 +7,14 @@ import {
   GetUserArgs,
 } from "../types/registry-repo";
 import { getTappManifest } from "./get-tapp-data";
+import path from "path";
 
 export const TAPPLET_REGISTRY_REPO = "tapp-registry";
 export const BASE_BRANCH = "main";
-export const PR_TITLE_PREFIX = "New Tapplet";
+export const PR_TITLE_PREFIX = "New Tapplet:";
+export const SRC_DIR = "src";
+export const MANIFEST_FILE = "tapplet.manifest.json";
+export const REGISTRY_OWNER = "karczuRF";
 
 async function getAuthenticatedUser({ octokit }: GetUserArgs) {
   try {
@@ -80,7 +84,7 @@ async function createPullRequest({
   base = BASE_BRANCH,
   prTitle,
 }: CreatePullRequestArgs) {
-  const title = prTitle ?? `${PR_TITLE_PREFIX}: ${branchName}`;
+  const title = prTitle ?? `${branchName}`;
 
   try {
     const pr = await octokit.rest.pulls.create({
@@ -107,13 +111,14 @@ export async function registerTapp() {
   const user = await getAuthenticatedUser({ octokit });
   const tappletManifest = getTappManifest();
 
-  const owner = user.name ?? tappletManifest.author?.name;
+  // TODO add owner
+  const owner = REGISTRY_OWNER;
   if (!owner) {
     throw new Error("Registration error: owner not found");
   }
 
-  const branchName = `tapp/${tappletManifest.packageName}-${tappletManifest.version}`;
-
+  const branchName = `${tappletManifest.packageName}@${tappletManifest.version}`;
+  console.log(`Branch name: ${branchName}`);
   try {
     const createdBranch = await createBranch({
       octokit,
@@ -123,7 +128,18 @@ export async function registerTapp() {
       baseBranchName: BASE_BRANCH,
     });
     console.log(`Branch created: ${createdBranch}`);
-    const filePath = `src/${tappletManifest.packageName}/tapplet.manifest.json`;
+  } catch (error) {
+    console.log(`Branch not created!`);
+    throw error;
+  }
+
+  try {
+    const filePath = path.join(
+      SRC_DIR,
+      tappletManifest.packageName,
+      tappletManifest.version,
+      MANIFEST_FILE
+    );
     const fileContent = JSON.stringify(tappletManifest);
     const createdFile = await createFile({
       octokit,
@@ -140,4 +156,13 @@ export async function registerTapp() {
   } catch (error) {
     throw error;
   }
+
+  try {
+    const pr = await createPullRequest({ octokit, owner, branchName });
+    console.log("PR created with data", pr);
+  } catch (error) {
+    throw error;
+  }
 }
+
+registerTapp();

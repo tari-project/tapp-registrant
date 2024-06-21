@@ -5,6 +5,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc --project tsconfig.build.json",
+    "build-n-copy": "npm run build && copyfiles src/images/*.svg dist",
     "register-tapp": "npx tsx src/scripts/register-tapp.ts"
   },
   "author": "",
@@ -13,8 +14,7 @@
   "exports": "./index.js",
   "files": [
     "./dist",
-    "./README.md",
-    "./tapplet.manifest.json"
+    "./README.md"
   ],
   "type": "module",
   "engines": {
@@ -28,5 +28,8 @@
     "ts-node": "^10.9.2",
     "tsx": "^4.11.2",
     "typescript": "^5.4.5"
+  },
+  "devDependencies": {
+    "copyfiles": "^2.4.1"
   }
 }
