@@ -119,6 +119,7 @@ export async function registerTapp() {
 
   const branchName = `${tappletManifest.packageName}@${tappletManifest.version}`;
   console.log(`Branch name: ${branchName}`);
+  console.log(`Branch created by: ${user}`);
   try {
     const createdBranch = await createBranch({
       octokit,
@@ -150,9 +151,6 @@ export async function registerTapp() {
       branchName,
     });
     console.log(`File added: ${createdFile}`);
-
-    const pr = await createPullRequest({ octokit, owner, branchName });
-    console.log("PR created with data", pr);
   } catch (error) {
     throw error;
   }

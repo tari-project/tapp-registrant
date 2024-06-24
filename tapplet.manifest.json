@@ -1,6 +1,6 @@
 {
   "packageName": "tapp-example",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "displayName": "Tapplet human readable name",
   "status": "MVP",
   "category": "test",
@@ -13,8 +13,8 @@
     "description": "This is the simplest example of a tapplet."
   },
   "design": {
-    "logoPath": "./dist/assets/logo.svg",
-    "backgroundPath": "./dist/assets/logo.svg"
+    "logoPath": "./dist/images/logo.svg",
+    "backgroundPath": "./dist/images/logo.svg"
   },
   "repository": {
     "type": "git",
@@ -25,7 +25,9 @@
     "location": {
       "npm": {
         "packageName": "tapp-example",
-        "registry": "https://registry.npmjs.org/"
+        "registry": "https://registry.npmjs.org/",
+        "distTarball": "https://registry.npmjs.org/tapp-example/-/tapp-example-1.0.3.tgz",
+        "integrity": "sha512-fxqEm3FBsH3io1RGkxsXNIOtMs6UGTORAP21/uMn+oAwS+4+rkXfQj5XRnVKzFXBSSgbaDZY6bohx7UfoAnC2A=="
       }
     }
   },
