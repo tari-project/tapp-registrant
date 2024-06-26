@@ -119,7 +119,7 @@ export async function registerTapp() {
 
   const branchName = `${tappletManifest.packageName}@${tappletManifest.version}`;
   console.log(`Branch name: ${branchName}`);
-  console.log(`Branch created by: ${user}`);
+  console.log(`Branch created by: ${user.name}`);
   try {
     const createdBranch = await createBranch({
       octokit,

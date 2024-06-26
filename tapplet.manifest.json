@@ -1,6 +1,6 @@
 {
   "packageName": "tapp-example",
-  "version": "1.0.3",
+  "version": "1.0.6",
   "displayName": "Tapplet human readable name",
   "status": "MVP",
   "category": "test",
@@ -26,8 +26,8 @@
       "npm": {
         "packageName": "tapp-example",
         "registry": "https://registry.npmjs.org/",
-        "distTarball": "https://registry.npmjs.org/tapp-example/-/tapp-example-1.0.3.tgz",
-        "integrity": "sha512-fxqEm3FBsH3io1RGkxsXNIOtMs6UGTORAP21/uMn+oAwS+4+rkXfQj5XRnVKzFXBSSgbaDZY6bohx7UfoAnC2A=="
+        "distTarball": "https://registry.npmjs.org/tapp-example/-/tapp-example-1.0.6.tgz",
+        "integrity": "sha512-+8cX71Ij1jtZ506p+Duz6Y+RPHFXPqHvWtwRb4zKh/kurA3BhFxYpK7gl7F6IFHNjaEPVao4R7p/+J/1MZlcdw=="
       }
     }
   },
