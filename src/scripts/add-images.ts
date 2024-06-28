@@ -1,7 +1,7 @@
 import { Octokit } from "octokit";
 import path from "path";
 import fs from "fs";
-import { IMAGES_DIR, SRC_DIR, TAPPLET_REGISTRY_REPO } from "../constants";
+import { IMAGES_DIR, SRC_DIR, TAPPLET_REGISTRY_REPO } from "../constants.js";
 
 export async function addImagesToRegistry(
   packageName: string,

@@ -1,10 +1,17 @@
 {
   "name": "tapp-registrant",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "bin": {
+    "tapp-registrant": "./dist/index.js"
+  },
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc --project tsconfig.build.json",
+    "build": "npx tsc",
     "build-n-copy": "npm run build && copyfiles src/images/*.svg dist",
     "register-tapp": "npx tsx src/scripts/main.ts",
     "init-tapp": "npx tsx src/scripts/init-tapp.ts"
@@ -17,12 +24,9 @@
     "./dist",
     "./README.md"
   ],
-  "type": "module",
-  "engines": {
-    "node": ">=18"
-  },
   "dependencies": {
     "@inquirer/prompts": "^5.0.6",
+    "@octokit/types": "^13.5.0",
     "@types/node": "^20.14.2",
     "dotenv": "^16.4.5",
     "octokit": "^4.0.2",

@@ -1,3 +1,3 @@
-import { registerTapp } from "./register-tapp";
+import { registerTapp } from "./register-tapp.js";
 
 registerTapp();

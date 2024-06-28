@@ -1,2 +1,2 @@
-export * from "./registry-repo";
-export * from "./tapplet";
+export * from "./registry-repo.js";
+export * from "./tapplet.js";

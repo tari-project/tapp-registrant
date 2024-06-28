@@ -1,3 +1,3 @@
-export * from "./get-tapp-data";
-export * from "./register-tapp";
-export * from "./init-tapp";
+export * from "./get-tapp-data.js";
+export * from "./register-tapp.js";
+export * from "./init-tapp.js";

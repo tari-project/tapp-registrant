@@ -2,10 +2,10 @@ import input from "@inquirer/input";
 import confirm from "@inquirer/confirm";
 
 import select from "@inquirer/select";
-import { createManifest } from "./create-manifest";
-import { getTappManifest } from "./get-tapp-data";
-import { initOctokitAndGetAuthUser, registerTapp } from "./register-tapp";
-import { Manifest } from "../types/manifest";
+import { createManifest } from "./create-manifest.js";
+import { getTappManifest } from "./get-tapp-data.js";
+import { initOctokitAndGetAuthUser, registerTapp } from "./register-tapp.js";
+import { Manifest } from "../types/manifest.js";
 
 export async function initTapp() {
   const user = await initOctokitAndGetAuthUser();
@@ -181,5 +181,3 @@ export async function initTapp() {
     );
   }
 }
-
-initTapp();
