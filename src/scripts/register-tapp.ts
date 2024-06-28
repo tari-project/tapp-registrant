@@ -104,6 +104,10 @@ async function createPullRequest({
 }
 
 export async function initOctokitAndGetAuthUser() {
+  /**
+   *
+   * FETCH GH ACCESS TOKEN WITH SCRIPT
+   */
   if (!process.env.GITHUB_ACCESS_TOKEN) {
     throw new Error("Registration error: github access token not found");
   }

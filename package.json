@@ -28,7 +28,9 @@
     "@inquirer/prompts": "^5.0.6",
     "@octokit/types": "^13.5.0",
     "@types/node": "^20.14.2",
+    "commander": "^12.1.0",
     "dotenv": "^16.4.5",
+    "figlet": "^1.7.0",
     "octokit": "^4.0.2",
     "superstruct": "^1.0.4",
     "ts-node": "^10.9.2",
@@ -36,6 +38,7 @@
     "typescript": "^5.4.5"
   },
   "devDependencies": {
+    "@types/figlet": "^1.5.8",
     "copyfiles": "^2.4.1"
   }
 }
