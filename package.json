@@ -16,9 +16,9 @@
     "register-tapp": "npx tsx src/scripts/main.ts",
     "init-tapp": "npx tsx src/scripts/init-tapp.ts"
   },
-  "author": "",
+  "author": "karczuRF",
   "license": "ISC",
-  "description": "",
+  "description": "The tapplet registration tool",
   "exports": "./index.js",
   "files": [
     "./dist",
