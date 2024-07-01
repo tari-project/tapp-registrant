@@ -165,19 +165,32 @@ export async function initTapp() {
   });
 
   createManifest(manifest);
-
-  const isRegistrationAccepted = await confirm({
-    message: "Manifest created. Register the tapplet now?",
+  console.log("About to create manifest");
+  console.log(manifest);
+  const isManifestAccepted = await confirm({
+    message: "Is this OK?",
   });
 
-  if (isRegistrationAccepted) {
-    console.log("Registration process has started!");
-    const tappletManifest = getTappManifest();
-    console.log("manifest version:", tappletManifest.version);
-    await registerTapp();
+  if (isManifestAccepted) {
+    const isRegistrationAccepted = await confirm({
+      message: "Manifest created. Register the tapplet now?",
+    });
+
+    if (isRegistrationAccepted) {
+      console.log("\x1b[42m%s\x1b[0m", "Registration process has started!");
+      const tappletManifest = getTappManifest();
+      console.log("Tapplet manifest version:", tappletManifest.version);
+      await registerTapp();
+    } else {
+      console.log(
+        "\x1b[42m%s\x1b[0m",
+        "Manifest created successfully! To register the tapplet use 'tapp-registrant -r'"
+      );
+    }
   } else {
     console.log(
-      "Manifest created successfully! To register the tapplet use command 'npm run register-tapp'"
+      "\x1b[42m%s\x1b[0m",
+      "The manifest has been created but must be corrected manually before registration"
     );
   }
 }

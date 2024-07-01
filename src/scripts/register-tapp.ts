@@ -18,6 +18,7 @@ import {
   TAPPLET_REGISTRY_REPO,
   VER_DIR,
 } from "../constants.js";
+import { getGhp } from "./get-ghp.js";
 
 async function getAuthenticatedUser({ octokit }: GetUserArgs) {
   try {
@@ -104,13 +105,10 @@ async function createPullRequest({
 }
 
 export async function initOctokitAndGetAuthUser() {
-  /**
-   *
-   * FETCH GH ACCESS TOKEN WITH SCRIPT
-   */
   if (!process.env.GITHUB_ACCESS_TOKEN) {
-    throw new Error("Registration error: github access token not found");
+    getGhp();
   }
+
   const octokit = new Octokit({
     auth: process.env.GITHUB_ACCESS_TOKEN,
   });
@@ -121,11 +119,12 @@ export async function initOctokitAndGetAuthUser() {
 
 export async function registerTapp() {
   if (!process.env.GITHUB_ACCESS_TOKEN) {
-    throw new Error("Registration error: github access token not found");
+    getGhp();
   }
   const octokit = new Octokit({
     auth: process.env.GITHUB_ACCESS_TOKEN,
   });
+  const user = await getAuthenticatedUser({ octokit });
 
   // TODO adjust here the tapp-registry owner
   const owner = REGISTRY_OWNER;
@@ -133,7 +132,6 @@ export async function registerTapp() {
     throw new Error("Registration error: owner not found");
   }
 
-  const user = await getAuthenticatedUser({ octokit });
   const tappletManifest = getTappManifest();
 
   const branchName = `${tappletManifest.packageName}@${tappletManifest.version}`;
