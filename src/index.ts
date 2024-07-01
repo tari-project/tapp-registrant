@@ -9,8 +9,8 @@ console.log(figlet.textSync("TAPPLET REGISTRANT"));
 const program = new Command();
 program
   .version("1.0.0")
-  .description("An example CLI for managing a directory")
-  .option("-i, --init", "Init the registration process")
+  .description("The tapplet registration tool")
+  .option("-i, --init", "Create manifest file")
   .option("-r, --register", "Register the tapplet")
   .option("-l, --list", "List registered tapplets")
   .parse(process.argv);
