@@ -13,7 +13,7 @@ import {
 } from "../types/tapplet.js";
 import { MANIFEST_FILE } from "../constants.js";
 
-function writeManifestFile(manifest: TappManifest): void {
+export function writeManifestFile(manifest: TappManifest): void {
   const json = JSON.stringify(manifest, null, 2);
 
   fs.writeFileSync(MANIFEST_FILE, json);
@@ -55,7 +55,7 @@ export async function createManifest() {
         },
       },
     },
-    supportedChainId: ["MAINNET", "STAGENET", "NEXTNET"],
+    supportedChain: ["MAINNET", "STAGENET", "NEXTNET"],
     manifestVersion: "",
   };
 
@@ -164,7 +164,7 @@ export async function createManifest() {
     message: "Enter npm package integrity",
     default: "sha512-...",
   });
-  manifest.supportedChainId = await checkbox({
+  manifest.supportedChain = await checkbox({
     message: "Select all supported chains",
     choices: [
       {

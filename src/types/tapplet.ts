@@ -48,6 +48,6 @@ export type TappManifest = {
   design: Design;
   repository: Repository;
   source: Source;
-  supportedChainId: SupportedChain[];
+  supportedChain: SupportedChain[];
   manifestVersion: string;
 };
