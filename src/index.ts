@@ -1,6 +1,6 @@
 #! /usr/bin/env node
 import { Command } from "commander";
-import { initTapp } from "./scripts/init-tapp.js";
+import { createManifest } from "./scripts/createManifest.js";
 import { registerTapp } from "./scripts/register-tapp.js";
 import figlet from "figlet";
 
@@ -17,6 +17,7 @@ program
 
 const options = program.opts();
 async function listRegisteredTapplets() {
+  //TODO
   try {
     const detailedFilesPromises = {
       tapplet: "tapp-example",
@@ -31,13 +32,11 @@ async function listRegisteredTapplets() {
 }
 
 if (options.init) {
-  console.log("Init process started");
-  initTapp();
+  createManifest();
 }
 if (options.list) {
   listRegisteredTapplets();
 }
 if (options.register) {
-  console.log("Register process started");
   registerTapp();
 }

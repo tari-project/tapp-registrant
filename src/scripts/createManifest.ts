@@ -1,18 +1,25 @@
+import * as fs from "fs";
 import input from "@inquirer/input";
 import confirm from "@inquirer/confirm";
-
 import select from "@inquirer/select";
-import { createManifest } from "./create-manifest.js";
-import { getTappManifest } from "./get-tapp-data.js";
+import { checkbox } from "@inquirer/prompts";
+
+import { getTappManifest } from "./getTappManifest.js";
 import { initOctokitAndGetAuthUser, registerTapp } from "./register-tapp.js";
 import {
   TappManifest,
   imagesPathPattern,
   versionPattern,
 } from "../types/tapplet.js";
-import { checkbox } from "@inquirer/prompts";
+import { MANIFEST_FILE } from "../constants.js";
 
-export async function initTapp() {
+function writeManifestFile(manifest: TappManifest): void {
+  const json = JSON.stringify(manifest, null, 2);
+
+  fs.writeFileSync(MANIFEST_FILE, json);
+}
+
+export async function createManifest() {
   const user = await initOctokitAndGetAuthUser();
 
   let manifest: TappManifest = {
@@ -186,7 +193,6 @@ export async function initTapp() {
       versionPattern.test(input) ?? "provided version is invalid",
   });
 
-  createManifest(manifest);
   console.log("About to create manifest");
   console.log(manifest);
   const isManifestAccepted = await confirm({
@@ -194,8 +200,11 @@ export async function initTapp() {
   });
 
   if (isManifestAccepted) {
+    writeManifestFile(manifest);
+
     const isRegistrationAccepted = await confirm({
       message: "Manifest created. Register the tapplet now?",
+      default: false,
     });
 
     if (isRegistrationAccepted) {

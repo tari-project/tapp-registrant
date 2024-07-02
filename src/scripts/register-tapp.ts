@@ -6,8 +6,8 @@ import {
   CreatePullRequestArgs,
   GetUserArgs,
 } from "../types/registry-repo.js";
-import { getTappManifest } from "./get-tapp-data.js";
-import { addImagesToRegistry } from "./add-images.js";
+import { getTappManifest } from "./getTappManifest.js";
+import { addImagesToRegistry } from "./addImages.js";
 import path from "path";
 
 import {
@@ -18,7 +18,7 @@ import {
   TAPPLET_REGISTRY_REPO,
   VER_DIR,
 } from "../constants.js";
-import { getGhp } from "./get-ghp.js";
+import { getGhp } from "./getGhp.js";
 
 async function getAuthenticatedUser({ octokit }: GetUserArgs) {
   try {
