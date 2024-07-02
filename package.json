@@ -1,6 +1,6 @@
 {
   "name": "tapp-registrant",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "main": "dist/index.js",
   "bin": {
     "tapp-registrant": "./dist/index.js"
@@ -36,9 +36,7 @@
     "superstruct": "^1.0.4",
     "ts-node": "^10.9.2",
     "tsx": "^4.11.2",
-    "typescript": "^5.4.5"
-  },
-  "devDependencies": {
+    "typescript": "^5.4.5",
     "@types/figlet": "^1.5.8",
     "@types/inquirer": "^9.0.7",
     "copyfiles": "^2.4.1"

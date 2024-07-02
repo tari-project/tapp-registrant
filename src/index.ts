@@ -13,7 +13,7 @@ console.log(figlet.textSync("TAPPLET REGISTRANT"));
 
 const program = new Command();
 program
-  .version("1.0.2")
+  .version("1.0.4")
   .description("The tapplet registration tool")
   .option("-i, --init", "Create manifest file")
   .option("-r, --register", "Register the tapplet")
