@@ -1,5 +1,5 @@
 import { getTappManifest } from "../helpers/index.js";
-import { select } from "@inquirer/prompts";
+import { input, select } from "@inquirer/prompts";
 import { versionPattern } from "../types/tapplet.js";
 import {
   BASE_BRANCH,
@@ -34,6 +34,15 @@ export async function deprecateTappVersion(version: string) {
       },
     ],
   });
+  // remove these fields because it's not needed anymore
+  manifest.source.location.npm.distTarball = await input({
+    message: "Enter package tarball url (only if needed)",
+    default: "",
+  });
+  manifest.source.location.npm.integrity = await input({
+    message: "Enter npm package integrity (only if needed)",
+    default: "",
+  });
 
   const { octokit } = await initOctokitAndGetAuthUser();
   const owner = REGISTRY_OWNER;
@@ -42,7 +51,7 @@ export async function deprecateTappVersion(version: string) {
   }
 
   // note: branch name needs to be exactly like this for github workflows
-  const branchName = `${manifest.packageName}@${manifest.version}@DEPRECATED`;
+  const branchName = `${manifest.packageName}@${manifest.version}-D`;
   const filePath = path.join(
     SRC_DIR,
     manifest.packageName,
