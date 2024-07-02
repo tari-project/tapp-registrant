@@ -1,4 +1,4 @@
-import { getTappManifest } from "./getTappManifest.js";
+import { getTappManifest } from "../helpers/index.js";
 import { writeManifestFile } from "./createManifest.js";
 import { input } from "@inquirer/prompts";
 

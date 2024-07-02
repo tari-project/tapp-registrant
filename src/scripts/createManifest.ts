@@ -4,14 +4,15 @@ import confirm from "@inquirer/confirm";
 import select from "@inquirer/select";
 import { checkbox } from "@inquirer/prompts";
 
-import { getTappManifest } from "./getTappManifest.js";
-import { initOctokitAndGetAuthUser, registerTapp } from "./register-tapp.js";
+import { getTappManifest } from "../helpers/index.js";
+import { registerTapp } from "./registerTapp.js";
 import {
   TappManifest,
   imagesPathPattern,
   versionPattern,
 } from "../types/tapplet.js";
 import { MANIFEST_FILE } from "../constants.js";
+import { initOctokitAndGetAuthUser } from "../helpers/repo.js";
 
 export function writeManifestFile(manifest: TappManifest): void {
   const json = JSON.stringify(manifest, null, 2);
@@ -20,7 +21,7 @@ export function writeManifestFile(manifest: TappManifest): void {
 }
 
 export async function createManifest() {
-  const user = await initOctokitAndGetAuthUser();
+  const { user } = await initOctokitAndGetAuthUser();
 
   let manifest: TappManifest = {
     packageName: "",
