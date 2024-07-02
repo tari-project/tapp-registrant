@@ -1,7 +1,14 @@
 import { Octokit } from "octokit";
 import path from "path";
 import fs from "fs";
-import { IMAGES_DIR, SRC_DIR, TAPPLET_REGISTRY_REPO } from "../constants.js";
+import {
+  BASE_BRANCH,
+  BG_FILE,
+  IMAGES_DIR,
+  LOGO_FILE,
+  SRC_DIR,
+  TAPPLET_REGISTRY_REPO,
+} from "../constants.js";
 
 export async function getSha(
   owner: string,
@@ -12,13 +19,13 @@ export async function getSha(
     owner,
     repo: TAPPLET_REGISTRY_REPO,
     file_path: filePath,
-    branch: "main",
+    branch: BASE_BRANCH,
   };
   const resultSha = await octokit.request(
     "GET /repos/{owner}/{repo}/contents/{file_path}",
     param
   );
-  console.log("The images sha is", resultSha.data.sha);
+  console.log(`The ${filePath} SHA:", ${resultSha.data.sha}`);
   return resultSha.data.sha;
 }
 
@@ -31,8 +38,8 @@ export async function addImagesToRegistry(
   const imagesPathLocal = path.join(SRC_DIR, IMAGES_DIR);
   const logoPathTappRegistry = path.join(SRC_DIR, packageName, IMAGES_DIR);
 
-  const logoFile = path.join(imagesPathLocal, "logo.svg");
-  const logoFileRegistry = path.join(logoPathTappRegistry, "logo.svg");
+  const logoFile = path.join(imagesPathLocal, LOGO_FILE);
+  const logoFileRegistry = path.join(logoPathTappRegistry, LOGO_FILE);
   // Convert to base64-encoded string
   const imageBase64 = fs.readFileSync(logoFile).toString("base64");
   const resultImageSha = await getSha(owner, logoFileRegistry, octokit);
@@ -40,21 +47,21 @@ export async function addImagesToRegistry(
     owner,
     repo: TAPPLET_REGISTRY_REPO,
     path: logoFileRegistry,
-    message: `Add logo image`,
+    message: `Add ${LOGO_FILE}`,
     content: imageBase64,
     branch: branchName,
     sha: resultImageSha,
   });
 
-  const bgFile = path.join(imagesPathLocal, "background.svg");
-  const bgFileRegistry = path.join(logoPathTappRegistry, "background.svg");
+  const bgFile = path.join(imagesPathLocal, BG_FILE);
+  const bgFileRegistry = path.join(logoPathTappRegistry, BG_FILE);
   const bgBase64 = fs.readFileSync(bgFile).toString("base64");
   const resultBgSha = await getSha(owner, bgFileRegistry, octokit);
   await octokit.rest.repos.createOrUpdateFileContents({
     owner,
     repo: TAPPLET_REGISTRY_REPO,
     path: bgFileRegistry,
-    message: `Add background image`,
+    message: `Add ${BG_FILE}`,
     content: bgBase64,
     branch: branchName,
     sha: resultBgSha,
