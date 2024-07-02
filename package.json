@@ -1,30 +1,37 @@
 {
   "name": "tapp-registrant",
-  "version": "1.0.0",
-  "main": "index.js",
+  "version": "1.0.2",
+  "main": "dist/index.js",
+  "bin": {
+    "tapp-registrant": "./dist/index.js"
+  },
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc --project tsconfig.build.json",
+    "build": "npx tsc",
     "build-n-copy": "npm run build && copyfiles src/images/*.svg dist",
     "register-tapp": "npx tsx src/scripts/main.ts",
     "init-tapp": "npx tsx src/scripts/init-tapp.ts"
   },
-  "author": "",
+  "author": "karczuRF",
   "license": "ISC",
-  "description": "",
+  "description": "The tapplet registration tool",
   "exports": "./index.js",
   "files": [
     "./dist",
     "./README.md"
   ],
-  "type": "module",
-  "engines": {
-    "node": ">=18"
-  },
   "dependencies": {
     "@inquirer/prompts": "^5.0.6",
+    "@octokit/types": "^13.5.0",
     "@types/node": "^20.14.2",
+    "commander": "^12.1.0",
     "dotenv": "^16.4.5",
+    "figlet": "^1.7.0",
+    "inquirer": "^9.3.2",
     "octokit": "^4.0.2",
     "superstruct": "^1.0.4",
     "ts-node": "^10.9.2",
@@ -32,6 +39,8 @@
     "typescript": "^5.4.5"
   },
   "devDependencies": {
+    "@types/figlet": "^1.5.8",
+    "@types/inquirer": "^9.0.7",
     "copyfiles": "^2.4.1"
   }
 }

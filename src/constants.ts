@@ -6,3 +6,5 @@ export const VER_DIR = "versions";
 export const IMAGES_DIR = "images";
 export const MANIFEST_FILE = "tapplet.manifest.json";
 export const REGISTRY_OWNER = "karczuRF";
+export const LOGO_FILE = "logo.svg";
+export const BG_FILE = "backgrounds.svg";

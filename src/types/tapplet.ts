@@ -1,67 +1,53 @@
-import {
-  object,
-  record,
-  string,
-  optional,
-  enums,
-  Infer,
-  pattern,
-  array,
-} from "superstruct";
+export const imagesPathPattern = new RegExp("^.*/images/[^/]+.svg$");
+export const versionPattern = new RegExp("^([1-9]d*|0)(.(([1-9]d*)|0)){2}$");
 
-export const AssetsPathStruct = pattern(
-  string(),
-  /\.\/assets\/.*\/\d+\.(?:png|jpe?g)$/u
-);
+export type TappCategory = "TEST" | "USER" | "OTHER";
+export type TappStatus = "WIP" | "TEST" | "PROD" | "DEPRECATED";
+export type SupportedChain = "MAINNET" | "STAGENET" | "NEXTNET";
 
-export const CategoryEnums = enums(["test", "defi", "gamefi", "meme"]);
+type Author = {
+  name: string;
+  website: string;
+};
 
-export const AuthorStruct = object({
-  name: string(),
-  website: string(),
-});
-export type Author = Infer<typeof AuthorStruct>;
+type About = {
+  summary: string;
+  description: string;
+};
 
-export const AboutStruct = object({
-  summary: string(),
-  description: string(),
-});
-export type About = Infer<typeof AboutStruct>;
+type Design = {
+  logoPath: string;
+  backgroundPath: string;
+};
 
-export const DesignStruct = object({
-  logoPath: AssetsPathStruct,
-  backgroundPath: AssetsPathStruct,
-});
-export type Design = Infer<typeof DesignStruct>;
+type Repository = {
+  type: string;
+  url: string;
+  codeowners: string[];
+};
 
-export const RepositoryStruct = object({
-  type: string(),
-  url: string(),
-  codeowners: array(string()),
-});
-export type Repository = Infer<typeof RepositoryStruct>;
+type Location = {
+  packageName: string;
+  registry: string;
+  distTarball: string;
+  integrity: string;
+};
 
-export const LocationStruct = object({
-  packageName: string(),
-  registry: string(),
-});
-export const SourceStruct = object({
-  location: record(enums(["npm"]), LocationStruct),
-});
+type Source = {
+  location: Record<"npm", Location>;
+};
 
-export const StatusEnums = enums(["WIP", "MVP", "PROD"]);
-
-export const TappManifestStruct = object({
-  packageName: string(),
-  displayName: string(),
-  version: string(),
-  status: optional(StatusEnums),
-  category: optional(CategoryEnums),
-  author: optional(AuthorStruct),
-  about: AboutStruct,
-  design: DesignStruct,
-  repository: RepositoryStruct,
-  source: SourceStruct,
-  manifestVersion: string(), //TODO use SemVerRange from @metamask/utils
-});
-export type TappManifest = Infer<typeof TappManifestStruct>;
+export type TappManifest = {
+  packageName: string;
+  version: string;
+  displayName: string;
+  status: TappStatus;
+  category: TappCategory;
+  author: Author;
+  about: About;
+  design: Design;
+  repository: Repository;
+  source: Source;
+  supportedChain: SupportedChain[];
+  manifestVersion: string;
+};

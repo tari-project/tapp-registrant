@@ -1,21 +1,34 @@
+import * as fs from "fs";
 import input from "@inquirer/input";
 import confirm from "@inquirer/confirm";
-
 import select from "@inquirer/select";
-import { createManifest } from "./create-manifest";
-import { getTappManifest } from "./get-tapp-data";
-import { initOctokitAndGetAuthUser, registerTapp } from "./register-tapp";
-import { Manifest } from "../types/manifest";
+import { checkbox } from "@inquirer/prompts";
 
-export async function initTapp() {
-  const user = await initOctokitAndGetAuthUser();
+import { getTappManifest } from "../helpers/index.js";
+import { registerTapp } from "./registerTapp.js";
+import {
+  TappManifest,
+  imagesPathPattern,
+  versionPattern,
+} from "../types/tapplet.js";
+import { MANIFEST_FILE } from "../constants.js";
+import { initOctokitAndGetAuthUser } from "../helpers/repo.js";
 
-  let manifest: Manifest = {
+export function writeManifestFile(manifest: TappManifest): void {
+  const json = JSON.stringify(manifest, null, 2);
+
+  fs.writeFileSync(MANIFEST_FILE, json);
+}
+
+export async function createManifest() {
+  const { user } = await initOctokitAndGetAuthUser();
+
+  let manifest: TappManifest = {
     packageName: "",
     version: "",
     displayName: "",
-    status: "",
-    category: "",
+    status: "TEST",
+    category: "TEST",
     author: {
       name: "",
       website: "",
@@ -43,6 +56,7 @@ export async function initTapp() {
         },
       },
     },
+    supportedChain: ["MAINNET", "STAGENET", "NEXTNET"],
     manifestVersion: "",
   };
 
@@ -66,7 +80,7 @@ export async function initTapp() {
     choices: [
       {
         name: "mvp",
-        value: "MVP",
+        value: "WIP",
         description: "A minimum viable product",
       },
       {
@@ -91,19 +105,14 @@ export async function initTapp() {
     message: "Select the tapplet category",
     choices: [
       {
-        name: "defi",
-        value: "DEFI",
-        description: "Defi",
-      },
-      {
-        name: "nft",
-        value: "NFT",
-        description: "NFT",
+        name: "test",
+        value: "TEST",
+        description: "Tapplet for testing purposes only",
       },
       {
         name: "user",
         value: "USER",
-        description: "User",
+        description: "Tapplet to improve UX",
       },
       {
         name: "other",
@@ -129,23 +138,20 @@ export async function initTapp() {
     message: "Enter long summary",
   });
 
-  const isCopyingAccepted = await confirm({
-    message:
-      "Do you want to copy logo and background images to the Tapplets Registry?",
+  manifest.design.logoPath = await input({
+    message: "Enter logo image path",
+    default: "src/images/logo.svg",
+    validate: (input) =>
+      imagesPathPattern.test(input) ?? "provided path is invalid",
   });
-  if (isCopyingAccepted) {
-    manifest.design.logoPath = await input({
-      message: "Enter logo image path",
-      default: "src/images/logo.svg",
-    });
 
-    manifest.design.backgroundPath = await input({
-      message: "Enter background image path",
-      default: "src/images/background.svg",
-    });
+  manifest.design.backgroundPath = await input({
+    message: "Enter background image path",
+    default: "src/images/background.svg",
+    validate: (input) =>
+      imagesPathPattern.test(input) ?? "provided path is invalid",
+  });
 
-    console.log("Cool, now images should be copied!");
-  }
   manifest.source.location.npm.packageName = manifest.packageName;
   manifest.source.location.npm.registry = await input({
     message: "Enter registry url",
@@ -159,27 +165,64 @@ export async function initTapp() {
     message: "Enter npm package integrity",
     default: "sha512-...",
   });
+  manifest.supportedChain = await checkbox({
+    message: "Select all supported chains",
+    choices: [
+      {
+        name: "MAINNET",
+        value: "MAINNET",
+        checked: true,
+      },
+      {
+        name: "STAGENET",
+        value: "STAGENET",
+        checked: true,
+      },
+      {
+        name: "NEXTNET",
+        value: "NEXTNET",
+        checked: true,
+      },
+    ],
+    instructions: true,
+  });
+
   manifest.manifestVersion = await input({
     message: "Enter tapplet manifest version",
     default: "1.0.0",
+    validate: (input) =>
+      versionPattern.test(input) ?? "provided version is invalid",
   });
 
-  createManifest(manifest);
-
-  const isRegistrationAccepted = await confirm({
-    message: "Manifest created. Register the tapplet now?",
+  console.log("About to create manifest");
+  console.log(manifest);
+  const isManifestAccepted = await confirm({
+    message: "Is this OK?",
   });
 
-  if (isRegistrationAccepted) {
-    console.log("Registration process has started!");
-    const tappletManifest = getTappManifest();
-    console.log("manifest version:", tappletManifest.version);
-    await registerTapp();
+  if (isManifestAccepted) {
+    writeManifestFile(manifest);
+
+    const isRegistrationAccepted = await confirm({
+      message: "Manifest created. Register the tapplet now?",
+      default: false,
+    });
+
+    if (isRegistrationAccepted) {
+      console.log("\x1b[42m%s\x1b[0m", "Registration process has started!");
+      const tappletManifest = getTappManifest();
+      console.log("Tapplet manifest version:", tappletManifest.version);
+      await registerTapp();
+    } else {
+      console.log(
+        "\x1b[42m%s\x1b[0m",
+        "Manifest created successfully! To register the tapplet use 'tapp-registrant -r'"
+      );
+    }
   } else {
     console.log(
-      "Manifest created successfully! To register the tapplet use command 'npm run register-tapp'"
+      "\x1b[42m%s\x1b[0m",
+      "The manifest has been created but must be corrected manually before registration"
     );
   }
 }
-
-initTapp();
