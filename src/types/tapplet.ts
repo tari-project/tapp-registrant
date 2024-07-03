@@ -1,5 +1,8 @@
 export const imagesPathPattern = new RegExp("^.*/images/[^/]+.svg$");
 export const versionPattern = new RegExp("^([1-9]d*|0)(.(([1-9]d*)|0)){2}$");
+export const integrityPattern = new RegExp(
+  "^sha[1-9][0-9]{0,2}-([A-Za-z0-9+/=]{86})==$"
+);
 
 export type TappCategory = "TEST" | "USER" | "OTHER";
 export type TappStatus = "WIP" | "TEST" | "PROD" | "DEPRECATED";

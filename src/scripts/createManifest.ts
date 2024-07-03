@@ -10,6 +10,7 @@ import { registerTapp } from "./registerTapp.js";
 import {
   TappManifest,
   imagesPathPattern,
+  integrityPattern,
   versionPattern,
 } from "../types/tapplet.js";
 import { MANIFEST_FILE } from "../constants.js";
@@ -188,6 +189,8 @@ export async function createManifest() {
   manifest.source.location.npm.integrity = await input({
     message: "Enter npm package integrity (use 'npm view <NAME>' to check)",
     default: "<sha512>",
+    validate: (input) =>
+      integrityPattern.test(input) ?? "provided value is invalid",
   });
   manifest.supportedChain = await checkbox({
     message: "Select all supported chains",
