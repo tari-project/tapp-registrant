@@ -17,6 +17,7 @@ import {
   initOctokitAndGetAuthUser,
 } from "../helpers/repo.js";
 import { getTappManifest } from "../helpers/index.js";
+import { PrPrefix } from "../types/index.js";
 
 export async function registerTapp() {
   const { octokit, user } = await initOctokitAndGetAuthUser();
@@ -29,7 +30,9 @@ export async function registerTapp() {
 
   const tappletManifest = getTappManifest();
 
-  const branchName = `${tappletManifest.packageName}@${tappletManifest.version}`;
+  // note: branch name needs to be exactly like this for github workflows
+  const prPrexix: PrPrefix = "Add";
+  const branchName = `${prPrexix} ${tappletManifest.packageName}@${tappletManifest.version}`;
   console.log(`Branch name: ${branchName}`);
   console.log(`Branch created by: ${user.login}`);
   try {

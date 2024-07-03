@@ -16,6 +16,7 @@ import {
   createPullRequest,
   initOctokitAndGetAuthUser,
 } from "../helpers/repo.js";
+import { PrPrefix } from "../types/index.js";
 
 export async function deprecateTappVersion(version: string) {
   if (!versionPattern.test(version)) throw new Error("Version not valid");
@@ -51,7 +52,8 @@ export async function deprecateTappVersion(version: string) {
   }
 
   // note: branch name needs to be exactly like this for github workflows
-  const branchName = `${manifest.packageName}@${manifest.version}-D`;
+  const prPrexix: PrPrefix = "Deprecate";
+  const branchName = `${prPrexix} ${manifest.packageName}@${manifest.version}`;
   const filePath = path.join(
     SRC_DIR,
     manifest.packageName,
