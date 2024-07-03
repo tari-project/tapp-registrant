@@ -13,8 +13,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npx tsc",
     "build-n-copy": "npm run build && copyfiles src/images/*.svg dist",
-    "register-tapp": "npx tsx src/scripts/main.ts",
-    "init-tapp": "npx tsx src/scripts/init-tapp.ts"
+    "init-tapp": "npx tsx src/index.ts -i"
   },
   "author": "karczuRF",
   "license": "ISC",

@@ -1,4 +1,5 @@
 import * as fs from "fs";
+import inquirer from "inquirer";
 import input from "@inquirer/input";
 import confirm from "@inquirer/confirm";
 import select from "@inquirer/select";
@@ -152,18 +153,41 @@ export async function createManifest() {
       imagesPathPattern.test(input) ?? "provided path is invalid",
   });
 
+  while (true) {
+    const { codeowner, addMore } = await inquirer.prompt([
+      {
+        type: "input",
+        name: "codeowner",
+        message: "Enter tapplet's code owner",
+        default: user.login,
+      },
+      {
+        type: "confirm",
+        name: "addMore",
+        message: "Add more owners?",
+        default: false,
+      },
+    ]);
+
+    manifest.repository.codeowners.push(`@${codeowner}`);
+
+    if (addMore === false) {
+      break;
+    }
+  }
+
   manifest.source.location.npm.packageName = manifest.packageName;
   manifest.source.location.npm.registry = await input({
     message: "Enter registry url",
     default: "https://registry.npmjs.org/",
   });
   manifest.source.location.npm.distTarball = await input({
-    message: "Enter package tarball url",
+    message: "Enter package tarball url (use 'npm view <NAME>' to check)",
     default: `https://registry.npmjs.org/${manifest.packageName}/-/${manifest.packageName}-${manifest.version}.tgz`,
   });
   manifest.source.location.npm.integrity = await input({
-    message: "Enter npm package integrity",
-    default: "sha512-...",
+    message: "Enter npm package integrity (use 'npm view <NAME>' to check)",
+    default: "<sha512>",
   });
   manifest.supportedChain = await checkbox({
     message: "Select all supported chains",
