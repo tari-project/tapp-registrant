@@ -31,8 +31,7 @@ export async function registerTapp() {
   const tappletManifest = getTappManifest();
 
   // note: branch name needs to be exactly like this for github workflows
-  const prPrexix: PrPrefix = "Add";
-  const branchName = `${prPrexix} ${tappletManifest.packageName}@${tappletManifest.version}`;
+  const branchName = `add/${tappletManifest.packageName}@${tappletManifest.version}`;
   console.log(`Branch name: ${branchName}`);
   console.log(`Branch created by: ${user.login}`);
   try {
@@ -85,7 +84,9 @@ export async function registerTapp() {
   }
 
   try {
-    const pr = await createPullRequest({ octokit, owner, branchName });
+    const prPrexix: PrPrefix = "Add";
+    const prTitle = `${prPrexix}/${tappletManifest.packageName}@${tappletManifest.version}`;
+    const pr = await createPullRequest({ octokit, owner, branchName, prTitle });
     console.log("PR created with data", pr);
   } catch (error) {
     throw error;

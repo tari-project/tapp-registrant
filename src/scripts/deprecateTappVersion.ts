@@ -1,5 +1,5 @@
 import { getTappManifest } from "../helpers/index.js";
-import { input, select } from "@inquirer/prompts";
+import { input } from "@inquirer/prompts";
 import { versionPattern } from "../types/tapplet.js";
 import {
   BASE_BRANCH,
@@ -17,6 +17,7 @@ import {
   initOctokitAndGetAuthUser,
 } from "../helpers/repo.js";
 import { PrPrefix } from "../types/index.js";
+import { getStatus } from "../helpers/cli.js";
 
 export async function deprecateTappVersion(version: string) {
   if (!versionPattern.test(version)) throw new Error("Version not valid");
@@ -24,17 +25,8 @@ export async function deprecateTappVersion(version: string) {
   // get current manifest file
   let manifest = getTappManifest();
   manifest.version = version;
+  manifest.status = await getStatus("DEPRECATED");
 
-  manifest.status = await select({
-    message: "Set the project status as deprecated",
-    choices: [
-      {
-        name: "deprecated",
-        value: "DEPRECATED",
-        description: "Tapplet version is deprecated",
-      },
-    ],
-  });
   // remove these fields because it's not needed anymore
   manifest.source.location.npm.distTarball = await input({
     message: "Enter package tarball url (only if needed)",
@@ -52,8 +44,7 @@ export async function deprecateTappVersion(version: string) {
   }
 
   // note: branch name needs to be exactly like this for github workflows
-  const prPrexix: PrPrefix = "Deprecate";
-  const branchName = `${prPrexix} ${manifest.packageName}@${manifest.version}`;
+  const branchName = `deprecate/${manifest.packageName}@${manifest.version}`;
   const filePath = path.join(
     SRC_DIR,
     manifest.packageName,
@@ -95,7 +86,9 @@ export async function deprecateTappVersion(version: string) {
 
   // create PR to deprecate version
   try {
-    const pr = await createPullRequest({ octokit, owner, branchName });
+    const prPrexix: PrPrefix = "Deprecate";
+    const prTitle = `${prPrexix}/${manifest.packageName}@${manifest.version}`;
+    const pr = await createPullRequest({ octokit, owner, branchName, prTitle });
     console.log("PR created with data", pr);
   } catch (error) {
     throw error;

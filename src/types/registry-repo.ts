@@ -30,4 +30,4 @@ export interface CreatePullRequestArgs {
   prTitle?: string;
 }
 
-export type PrPrefix = "Add" | "Deprecate" | "Bump";
+export type PrPrefix = "Add" | "Deprecate";

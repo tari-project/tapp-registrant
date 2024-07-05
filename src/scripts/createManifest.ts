@@ -1,20 +1,28 @@
 import * as fs from "fs";
-import inquirer from "inquirer";
-import input from "@inquirer/input";
-import confirm from "@inquirer/confirm";
-import select from "@inquirer/select";
-import { checkbox } from "@inquirer/prompts";
-
-import { getTappManifest } from "../helpers/index.js";
 import { registerTapp } from "./registerTapp.js";
-import {
-  TappManifest,
-  imagesPathPattern,
-  integrityPattern,
-  versionPattern,
-} from "../types/tapplet.js";
+import { TappManifest } from "../types/tapplet.js";
 import { MANIFEST_FILE } from "../constants.js";
 import { initOctokitAndGetAuthUser } from "../helpers/repo.js";
+import {
+  getAuthorName,
+  getAuthorWebsite,
+  getBackgroundPath,
+  getCategory,
+  getCodeowners,
+  getConfirmation,
+  getDescription,
+  getDisplayName,
+  getDistTarball,
+  getIntegrity,
+  getLogoPath,
+  getManifestVersion,
+  getPackageName,
+  getPackageVersion,
+  getRegistryUrl,
+  getStatus,
+  getSummary,
+  getSupportedChains,
+} from "../helpers/cli.js";
 
 export function writeManifestFile(manifest: TappManifest): void {
   const json = JSON.stringify(manifest, null, 2);
@@ -62,194 +70,47 @@ export async function createManifest() {
     manifestVersion: "",
   };
 
-  manifest.packageName = await input({
-    message: "Enter tapplet name",
-    default: "tapplet",
-  });
-
-  manifest.version = await input({
-    message: "Enter tapplet version",
-    default: "1.0.0",
-  });
-
-  manifest.displayName = await input({
-    message: "Enter tapplet display name",
-    default: "The Tapplet description",
-  });
-
-  manifest.status = await select({
-    message: "Select the project status",
-    choices: [
-      {
-        name: "mvp",
-        value: "WIP",
-        description: "A minimum viable product",
-      },
-      {
-        name: "test",
-        value: "TEST",
-        description: "Tapplet is in the test phase",
-      },
-      {
-        name: "prod",
-        value: "PROD",
-        description: "Tapplet is ready to be used",
-      },
-      {
-        name: "deprecated",
-        value: "DEPRECATED",
-        description: "Tapplet version is deprecated",
-      },
-    ],
-  });
-
-  manifest.category = await select({
-    message: "Select the tapplet category",
-    choices: [
-      {
-        name: "test",
-        value: "TEST",
-        description: "Tapplet for testing purposes only",
-      },
-      {
-        name: "user",
-        value: "USER",
-        description: "Tapplet to improve UX",
-      },
-      {
-        name: "other",
-        value: "OTHER",
-        description: "other",
-      },
-    ],
-  });
-
-  manifest.author.name = await input({
-    message: "Enter author's name",
-    default: user.login,
-  });
-  manifest.author.website = await input({
-    message: "Enter author's website",
-    default: user.repos_url,
-  });
-
-  manifest.about.summary = await input({
-    message: "Enter short summary",
-  });
-  manifest.about.description = await input({
-    message: "Enter long summary",
-  });
-
-  manifest.design.logoPath = await input({
-    message: "Enter logo image path",
-    default: "src/images/logo.svg",
-    validate: (input) =>
-      imagesPathPattern.test(input) ?? "provided path is invalid",
-  });
-
-  manifest.design.backgroundPath = await input({
-    message: "Enter background image path",
-    default: "src/images/background.svg",
-    validate: (input) =>
-      imagesPathPattern.test(input) ?? "provided path is invalid",
-  });
-
-  while (true) {
-    const { codeowner, addMore } = await inquirer.prompt([
-      {
-        type: "input",
-        name: "codeowner",
-        message: "Enter tapplet's code owner",
-        default: user.login,
-      },
-      {
-        type: "confirm",
-        name: "addMore",
-        message: "Add more owners?",
-        default: false,
-      },
-    ]);
-
-    manifest.repository.codeowners.push(`@${codeowner}`);
-
-    if (addMore === false) {
-      break;
-    }
-  }
-
+  manifest.packageName = await getPackageName();
+  manifest.version = await getPackageVersion();
+  manifest.displayName = await getDisplayName();
+  manifest.status = await getStatus();
+  manifest.category = await getCategory();
+  manifest.author.name = await getAuthorName(user.login);
+  manifest.author.website = await getAuthorWebsite(user.repos_url);
+  manifest.about.summary = await getSummary();
+  manifest.about.description = await getDescription();
+  manifest.design.logoPath = await getLogoPath();
+  manifest.design.backgroundPath = await getBackgroundPath();
+  manifest.repository.codeowners = await getCodeowners(user.login);
   manifest.source.location.npm.packageName = manifest.packageName;
-  manifest.source.location.npm.registry = await input({
-    message: "Enter registry url",
-    default: "https://registry.npmjs.org/",
-  });
-  manifest.source.location.npm.distTarball = await input({
-    message: "Enter package tarball url (use 'npm view <NAME>' to check)",
-    default: `https://registry.npmjs.org/${manifest.packageName}/-/${manifest.packageName}-${manifest.version}.tgz`,
-  });
-  manifest.source.location.npm.integrity = await input({
-    message: "Enter npm package integrity (use 'npm view <NAME>' to check)",
-    default: "<sha512>",
-    validate: (input) =>
-      integrityPattern.test(input) ?? "provided value is invalid",
-  });
-  manifest.supportedChain = await checkbox({
-    message: "Select all supported chains",
-    choices: [
-      {
-        name: "MAINNET",
-        value: "MAINNET",
-        checked: true,
-      },
-      {
-        name: "STAGENET",
-        value: "STAGENET",
-        checked: true,
-      },
-      {
-        name: "NEXTNET",
-        value: "NEXTNET",
-        checked: true,
-      },
-    ],
-    instructions: true,
-  });
-
-  manifest.manifestVersion = await input({
-    message: "Enter tapplet manifest version",
-    default: "1.0.0",
-    validate: (input) =>
-      versionPattern.test(input) ?? "provided version is invalid",
-  });
+  manifest.source.location.npm.registry = await getRegistryUrl();
+  manifest.source.location.npm.distTarball = await getDistTarball(
+    `https://registry.npmjs.org/${manifest.packageName}/-/${manifest.packageName}-${manifest.version}.tgz`
+  );
+  manifest.source.location.npm.integrity = await getIntegrity();
+  manifest.supportedChain = await getSupportedChains();
+  manifest.manifestVersion = await getManifestVersion();
 
   console.log("About to create manifest");
   console.log(manifest);
-  const isManifestAccepted = await confirm({
-    message: "Is this OK?",
-  });
+  const isManifestAccepted = await getConfirmation("Is this OK?", true);
 
   if (isManifestAccepted) {
     writeManifestFile(manifest);
-
-    const isRegistrationAccepted = await confirm({
-      message: "Manifest created. Register the tapplet now?",
-      default: false,
-    });
+    console.log("\x1b[42m%s\x1b[0m", "Manifest created successfully!");
+    const isRegistrationAccepted = await getConfirmation(
+      "Register the tapplet right now?"
+    );
 
     if (isRegistrationAccepted) {
       console.log("\x1b[42m%s\x1b[0m", "Registration process has started!");
-      const tappletManifest = getTappManifest();
-      console.log("Tapplet manifest version:", tappletManifest.version);
       await registerTapp();
     } else {
-      console.log(
-        "\x1b[42m%s\x1b[0m",
-        "Manifest created successfully! To register the tapplet use 'tapp-registrant -r'"
-      );
+      console.log("To register the tapplet use 'tapp-registrant -r'");
     }
   } else {
     console.log(
-      "\x1b[42m%s\x1b[0m",
-      "The manifest has been created but must be corrected manually before registration"
+      "Manifest file creation failed. Start the process over or create the manifest manually"
     );
   }
 }
