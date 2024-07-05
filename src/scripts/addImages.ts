@@ -2,32 +2,13 @@ import { Octokit } from "octokit";
 import path from "path";
 import fs from "fs";
 import {
-  BASE_BRANCH,
   BG_FILE,
   IMAGES_DIR,
   LOGO_FILE,
   SRC_DIR,
   TAPPLET_REGISTRY_REPO,
 } from "../constants.js";
-
-export async function getSha(
-  owner: string,
-  filePath: string,
-  octokit: Octokit
-): Promise<string> {
-  const param = {
-    owner,
-    repo: TAPPLET_REGISTRY_REPO,
-    file_path: filePath,
-    branch: BASE_BRANCH,
-  };
-  const resultSha = await octokit.request(
-    "GET /repos/{owner}/{repo}/contents/{file_path}",
-    param
-  );
-  console.log(`The ${filePath} SHA:", ${resultSha.data.sha}`);
-  return resultSha.data.sha;
-}
+import { getRepoContentSha } from "./getRepoContent.js";
 
 export async function addImagesToRegistry(
   packageName: string,
@@ -35,14 +16,29 @@ export async function addImagesToRegistry(
   branchName: string,
   octokit: Octokit
 ) {
+  // local file
   const imagesPathLocal = path.join(SRC_DIR, IMAGES_DIR);
-  const logoPathTappRegistry = path.join(SRC_DIR, packageName, IMAGES_DIR);
-
   const logoFile = path.join(imagesPathLocal, LOGO_FILE);
-  const logoFileRegistry = path.join(logoPathTappRegistry, LOGO_FILE);
-  // Convert to base64-encoded string
   const imageBase64 = fs.readFileSync(logoFile).toString("base64");
-  const resultImageSha = await getSha(owner, logoFileRegistry, octokit);
+
+  // registry repo file
+  const logoPathTappRegistry = path.join(SRC_DIR, packageName, IMAGES_DIR);
+  const logoFileRegistry = path.join(logoPathTappRegistry, LOGO_FILE);
+  const logoSha = await getRepoContentSha(
+    {
+      owner,
+      filePath: logoFileRegistry,
+      repo: TAPPLET_REGISTRY_REPO,
+      branch: branchName,
+    },
+    octokit
+  );
+  console.log(
+    logoSha
+      ? "The file already exists so it will be updated"
+      : "The new file will be added to the repo"
+  );
+
   await octokit.rest.repos.createOrUpdateFileContents({
     owner,
     repo: TAPPLET_REGISTRY_REPO,
@@ -50,13 +46,30 @@ export async function addImagesToRegistry(
     message: `Add ${LOGO_FILE}`,
     content: imageBase64,
     branch: branchName,
-    sha: resultImageSha,
+    sha: logoSha,
   });
 
+  // local file
   const bgFile = path.join(imagesPathLocal, BG_FILE);
-  const bgFileRegistry = path.join(logoPathTappRegistry, BG_FILE);
   const bgBase64 = fs.readFileSync(bgFile).toString("base64");
-  const resultBgSha = await getSha(owner, bgFileRegistry, octokit);
+
+  //registry repo file
+  const bgFileRegistry = path.join(logoPathTappRegistry, BG_FILE);
+  const bgSha = await getRepoContentSha(
+    {
+      owner,
+      filePath: bgFileRegistry,
+      repo: TAPPLET_REGISTRY_REPO,
+      branch: branchName,
+    },
+    octokit
+  );
+  console.log(
+    bgSha
+      ? "The file already exists so it will be updated"
+      : "The new file will be added to the repo"
+  );
+
   await octokit.rest.repos.createOrUpdateFileContents({
     owner,
     repo: TAPPLET_REGISTRY_REPO,
@@ -64,6 +77,6 @@ export async function addImagesToRegistry(
     message: `Add ${BG_FILE}`,
     content: bgBase64,
     branch: branchName,
-    sha: resultBgSha,
+    sha: bgSha,
   });
 }

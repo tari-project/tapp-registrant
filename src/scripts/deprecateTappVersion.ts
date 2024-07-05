@@ -10,7 +10,6 @@ import {
   VER_DIR,
 } from "../constants.js";
 import path from "path";
-import { getSha } from "./addImages.js";
 import {
   createBranch,
   createPullRequest,
@@ -18,6 +17,7 @@ import {
 } from "../helpers/repo.js";
 import { PrPrefix } from "../types/index.js";
 import { getStatus } from "../helpers/cli.js";
+import { getRepoContentSha } from "./getRepoContent.js";
 
 export async function deprecateTappVersion(version: string) {
   if (!versionPattern.test(version)) throw new Error("Version not valid");
@@ -67,7 +67,15 @@ export async function deprecateTappVersion(version: string) {
   }
 
   try {
-    const manifestSha = await getSha(owner, filePath, octokit);
+    const manifestSha = await getRepoContentSha(
+      {
+        owner,
+        filePath,
+        repo: TAPPLET_REGISTRY_REPO,
+        branch: branchName,
+      },
+      octokit
+    );
     const manifestFileContent = Buffer.from(JSON.stringify(manifest)).toString(
       "base64"
     );
@@ -89,7 +97,11 @@ export async function deprecateTappVersion(version: string) {
     const prPrexix: PrPrefix = "Deprecate";
     const prTitle = `${prPrexix}/${manifest.packageName}@${manifest.version}`;
     const pr = await createPullRequest({ octokit, owner, branchName, prTitle });
-    console.log("PR created with data", pr);
+    console.log(
+      "\x1b[42m%s\x1b[0m",
+      "PR created successfully with status:",
+      pr.status
+    );
   } catch (error) {
     throw error;
   }

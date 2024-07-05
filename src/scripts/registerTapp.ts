@@ -87,7 +87,11 @@ export async function registerTapp() {
     const prPrexix: PrPrefix = "Add";
     const prTitle = `${prPrexix}/${tappletManifest.packageName}@${tappletManifest.version}`;
     const pr = await createPullRequest({ octokit, owner, branchName, prTitle });
-    console.log("PR created with data", pr);
+    console.log(
+      "\x1b[42m%s\x1b[0m",
+      "PR created successfully with status:",
+      pr.status
+    );
   } catch (error) {
     throw error;
   }
