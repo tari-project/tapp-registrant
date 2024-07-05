@@ -1,7 +1,6 @@
 import * as fs from "fs"
 import { registerTapp } from "./registerTapp.js"
 import { TappManifest } from "../types/tapplet.js"
-import { MANIFEST_FILE } from "../constants.js"
 import { initOctokitAndGetAuthUser } from "../helpers/repo.js"
 import {
   getAuthorName,
@@ -23,12 +22,7 @@ import {
   getSummary,
   getSupportedChains,
 } from "../helpers/cli.js"
-
-export function writeManifestFile(manifest: TappManifest): void {
-  const json = JSON.stringify(manifest, null, 2)
-
-  fs.writeFileSync(MANIFEST_FILE, json)
-}
+import { getPackageJson, writeManifestFile } from "../helpers/readWriteJson.js"
 
 export async function createManifest() {
   const { user } = await initOctokitAndGetAuthUser()
@@ -70,12 +64,14 @@ export async function createManifest() {
     manifestVersion: "",
   }
 
-  manifest.packageName = await getPackageName()
-  manifest.version = await getPackageVersion()
+  const packageJson = getPackageJson()
+
+  manifest.packageName = await getPackageName(packageJson.name)
+  manifest.version = await getPackageVersion(packageJson.version)
   manifest.displayName = await getDisplayName()
   manifest.status = await getStatus()
   manifest.category = await getCategory()
-  manifest.author.name = await getAuthorName(user.login)
+  manifest.author.name = await getAuthorName(packageJson.author)
   manifest.author.website = await getAuthorWebsite(user.repos_url)
   manifest.about.summary = await getSummary()
   manifest.about.description = await getDescription()

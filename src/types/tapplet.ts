@@ -52,3 +52,10 @@ export type TappManifest = {
   supportedChain: SupportedChain[]
   manifestVersion: string
 }
+
+export type NpmPackageJson = {
+  name: string
+  version: string
+  author: string
+  licence: string
+}

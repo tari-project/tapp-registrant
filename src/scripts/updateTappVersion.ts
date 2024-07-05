@@ -1,6 +1,5 @@
-import { getTappManifest } from "../helpers/index.js"
+import { getTappManifest, writeManifestFile } from "../helpers/index.js"
 import { integrityPattern } from "../types/index.js"
-import { writeManifestFile } from "./createManifest.js"
 import { input } from "@inquirer/prompts"
 
 function bumpVersion(version: string): string {
