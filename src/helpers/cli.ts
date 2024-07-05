@@ -137,6 +137,8 @@ export async function getBackgroundPath(
 
 export async function getCodeowners(defaultValue?: string) {
   const codeowners = [];
+
+  // eslint-disable-next-line no-constant-condition
   while (true) {
     const { codeowner, addMore } = await inquirer.prompt([
       {

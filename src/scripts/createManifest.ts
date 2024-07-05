@@ -33,7 +33,7 @@ export function writeManifestFile(manifest: TappManifest): void {
 export async function createManifest() {
   const { user } = await initOctokitAndGetAuthUser();
 
-  let manifest: TappManifest = {
+  const manifest: TappManifest = {
     packageName: "",
     version: "",
     displayName: "",

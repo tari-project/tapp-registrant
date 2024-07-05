@@ -23,7 +23,7 @@ export async function deprecateTappVersion(version: string) {
   if (!versionPattern.test(version)) throw new Error("Version not valid");
 
   // get current manifest file
-  let manifest = getTappManifest();
+  const manifest = getTappManifest();
   manifest.version = version;
   manifest.status = await getStatus("DEPRECATED");
 
@@ -66,43 +66,35 @@ export async function deprecateTappVersion(version: string) {
     throw error;
   }
 
-  try {
-    const manifestSha = await getRepoContentSha(
-      {
-        owner,
-        filePath,
-        repo: TAPPLET_REGISTRY_REPO,
-        branch: branchName,
-      },
-      octokit
-    );
-    const manifestFileContent = Buffer.from(JSON.stringify(manifest)).toString(
-      "base64"
-    );
-    await octokit.rest.repos.createOrUpdateFileContents({
+  const manifestSha = await getRepoContentSha(
+    {
       owner,
+      filePath,
       repo: TAPPLET_REGISTRY_REPO,
-      path: filePath,
-      message: `Deprecate ${manifest.version}`,
-      content: manifestFileContent,
       branch: branchName,
-      sha: manifestSha,
-    });
-  } catch (error) {
-    throw error;
-  }
+    },
+    octokit
+  );
+  const manifestFileContent = Buffer.from(JSON.stringify(manifest)).toString(
+    "base64"
+  );
+  await octokit.rest.repos.createOrUpdateFileContents({
+    owner,
+    repo: TAPPLET_REGISTRY_REPO,
+    path: filePath,
+    message: `Deprecate ${manifest.version}`,
+    content: manifestFileContent,
+    branch: branchName,
+    sha: manifestSha,
+  });
 
   // create PR to deprecate version
-  try {
-    const prPrexix: PrPrefix = "Deprecate";
-    const prTitle = `${prPrexix}/${manifest.packageName}@${manifest.version}`;
-    const pr = await createPullRequest({ octokit, owner, branchName, prTitle });
-    console.log(
-      "\x1b[42m%s\x1b[0m",
-      "PR created successfully with status:",
-      pr.status
-    );
-  } catch (error) {
-    throw error;
-  }
+  const prPrexix: PrPrefix = "Deprecate";
+  const prTitle = `${prPrexix}/${manifest.packageName}@${manifest.version}`;
+  const pr = await createPullRequest({ octokit, owner, branchName, prTitle });
+  console.log(
+    "\x1b[42m%s\x1b[0m",
+    "PR created successfully with status:",
+    pr.status
+  );
 }

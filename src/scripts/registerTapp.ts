@@ -69,6 +69,7 @@ export async function registerTapp() {
       branchName,
     });
   } catch (error) {
+    console.log(`File not created!`);
     throw error;
   }
 
@@ -80,6 +81,7 @@ export async function registerTapp() {
       octokit
     );
   } catch (error) {
+    console.log(`Could not add images to the registry!`);
     throw error;
   }
 
@@ -93,6 +95,7 @@ export async function registerTapp() {
       pr.status
     );
   } catch (error) {
+    console.log("\x1b[41m%s\x1b[0m", `PR creation failed!`);
     throw error;
   }
 }

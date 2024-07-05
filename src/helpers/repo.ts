@@ -19,12 +19,8 @@ import {
 import { getGhp } from "./getGhp.js";
 
 export async function getAuthenticatedUser({ octokit }: GetUserArgs) {
-  try {
-    const { data } = await octokit.rest.users.getAuthenticated();
-    return data;
-  } catch (err) {
-    throw err;
-  }
+  const { data } = await octokit.rest.users.getAuthenticated();
+  return data;
 }
 
 export async function createBranch({
@@ -34,25 +30,21 @@ export async function createBranch({
   branchName,
   baseBranchName,
 }: CreateBranchArgs) {
-  try {
-    const baseBranchSha = (
-      await octokit.rest.repos.getBranch({
-        owner,
-        repo,
-        branch: baseBranchName,
-      })
-    ).data.commit.sha;
-
-    await octokit.rest.git.createRef({
+  const baseBranchSha = (
+    await octokit.rest.repos.getBranch({
       owner,
       repo,
-      ref: `refs/heads/${branchName}`,
-      sha: baseBranchSha,
-    });
-    return branchName;
-  } catch (error) {
-    throw error;
-  }
+      branch: baseBranchName,
+    })
+  ).data.commit.sha;
+
+  await octokit.rest.git.createRef({
+    owner,
+    repo,
+    ref: `refs/heads/${branchName}`,
+    sha: baseBranchSha,
+  });
+  return branchName;
 }
 
 export async function createFile({
@@ -63,19 +55,15 @@ export async function createFile({
   fileContent,
   branchName,
 }: CreateFileArgs) {
-  try {
-    await octokit.rest.repos.createOrUpdateFileContents({
-      owner,
-      repo,
-      path: filePath,
-      message: `Add ${filePath}`,
-      content: fileContent,
-      branch: branchName,
-    });
-    return filePath;
-  } catch (error) {
-    throw error;
-  }
+  await octokit.rest.repos.createOrUpdateFileContents({
+    owner,
+    repo,
+    path: filePath,
+    message: `Add ${filePath}`,
+    content: fileContent,
+    branch: branchName,
+  });
+  return filePath;
 }
 
 export async function createPullRequest({
@@ -88,18 +76,14 @@ export async function createPullRequest({
 }: CreatePullRequestArgs) {
   const title = prTitle ?? `${branchName}`;
 
-  try {
-    const pr = await octokit.rest.pulls.create({
-      owner,
-      repo,
-      base,
-      title,
-      head: branchName,
-    });
-    return pr;
-  } catch (err) {
-    throw err;
-  }
+  const pr = await octokit.rest.pulls.create({
+    owner,
+    repo,
+    base,
+    title,
+    head: branchName,
+  });
+  return pr;
 }
 
 export async function initOctokitAndGetAuthUser() {

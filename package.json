@@ -13,7 +13,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npx tsc",
     "build-n-copy": "npm run build && copyfiles src/images/*.svg dist",
-    "init-tapp": "npx tsx src/index.ts -i"
+    "init-tapp": "npx tsx src/index.ts -i",
+    "lint": "eslint . --ext .ts"
   },
   "author": "karczuRF",
   "license": "ISC",
@@ -26,18 +27,24 @@
   "dependencies": {
     "@inquirer/prompts": "^5.0.6",
     "@octokit/types": "^13.5.0",
+    "@types/figlet": "^1.5.8",
+    "@types/inquirer": "^9.0.7",
     "@types/node": "^20.14.2",
     "commander": "^12.1.0",
+    "copyfiles": "^2.4.1",
     "dotenv": "^16.4.5",
     "figlet": "^1.7.0",
     "inquirer": "^9.3.2",
     "octokit": "^4.0.2",
     "superstruct": "^1.0.4",
     "ts-node": "^10.9.2",
-    "tsx": "^4.11.2",
-    "typescript": "^5.4.5",
-    "@types/figlet": "^1.5.8",
-    "@types/inquirer": "^9.0.7",
-    "copyfiles": "^2.4.1"
+    "tsx": "^4.11.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.6.0",
+    "@types/eslint__js": "^8.42.3",
+    "eslint": "^8.57.0",
+    "typescript": "^5.5.3",
+    "typescript-eslint": "^7.15.0"
   }
 }

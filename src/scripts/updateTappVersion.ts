@@ -5,6 +5,7 @@ import { input } from "@inquirer/prompts";
 
 function bumpVersion(version: string): string {
   // Increment the version number
+  // eslint-disable-next-line prefer-const
   let [major, minor, patch] = version.split(".").map(Number);
   patch++;
   version = `${major}.${minor}.${patch}`;
@@ -12,7 +13,7 @@ function bumpVersion(version: string): string {
 }
 
 export async function updateTappVersion() {
-  let manifest = getTappManifest();
+  const manifest = getTappManifest();
   manifest.version = await input({
     message: "Enter the newest tapplet version",
     default: bumpVersion(manifest.version),

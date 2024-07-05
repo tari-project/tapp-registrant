@@ -22,7 +22,7 @@ export function getGhp(): void {
       "You do not have a .npmrc file or it does not contain a token";
     const wrongFormat = "token format is not valid";
     const message = token.length === 0 ? noToken : wrongFormat;
-    console.log("\x1b[42m%s\x1b[0m", message);
+    console.log("\x1b[41m%s\x1b[0m", message);
     inquirer
       .prompt({
         type: "input",
