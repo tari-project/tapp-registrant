@@ -1,4 +1,3 @@
-import * as fs from "fs"
 import { registerTapp } from "./registerTapp.js"
 import { TappManifest } from "../types/tapplet.js"
 import { initOctokitAndGetAuthUser } from "../helpers/repo.js"
