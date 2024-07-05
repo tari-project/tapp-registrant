@@ -1,18 +1,18 @@
 #! /usr/bin/env node
-import { Command } from "commander";
+import { Command } from "commander"
 import {
   createManifest,
   deprecateTappVersion,
   listRegisteredTapplets,
   registerTapp,
   updateTappVersion,
-} from "./scripts/index.js";
-import figlet from "figlet";
-import { getGhp } from "./helpers/getGhp.js";
+} from "./scripts/index.js"
+import figlet from "figlet"
+import { getGhp } from "./helpers/getGhp.js"
 
-console.log(figlet.textSync("TAPPLET REGISTRANT"));
+console.log(figlet.textSync("TAPPLET REGISTRANT"))
 
-const program = new Command();
+const program = new Command()
 program
   .version("1.0.11")
   .description("The tapplet registration tool")
@@ -22,25 +22,25 @@ program
   .option("-d, --deprecate <VERSION>", "deprecate the given tapplet version")
   .option("-l, --list", "list registered tapplets")
   .option("-g, --ghp", "find and add GitHub Access Token")
-  .parse(process.argv);
+  .parse(process.argv)
 
-const options = program.opts();
+const options = program.opts()
 
 if (options.init) {
-  createManifest();
+  createManifest()
 }
 if (options.list) {
-  listRegisteredTapplets();
+  listRegisteredTapplets()
 }
 if (options.update) {
-  updateTappVersion();
+  updateTappVersion()
 }
 if (options.register) {
-  registerTapp();
+  registerTapp()
 }
 if (options.deprecate) {
-  deprecateTappVersion(options.deprecate);
+  deprecateTappVersion(options.deprecate)
 }
 if (options.ghp) {
-  getGhp();
+  getGhp()
 }
