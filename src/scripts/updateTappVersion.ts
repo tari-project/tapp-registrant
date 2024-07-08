@@ -1,6 +1,7 @@
-import { getTappManifest, writeManifestFile } from "../helpers/index.js"
+import { getConfirmation, getTappManifest, writeManifestFile } from "../helpers/index.js"
 import { integrityPattern } from "../types/index.js"
 import { input } from "@inquirer/prompts"
+import { registerTapp } from "./index.js"
 
 function bumpVersion(version: string): string {
   // Increment the version number
@@ -29,5 +30,22 @@ export async function updateTappVersion() {
     validate: (input) => integrityPattern.test(input) ?? "provided value is invalid",
   })
 
+  console.log("About to update manifest")
+  console.log(manifest)
+  const isManifestAccepted = await getConfirmation("Is this OK?", true)
   writeManifestFile(manifest)
+  if (isManifestAccepted) {
+    writeManifestFile(manifest)
+    console.log("\x1b[42m%s\x1b[0m", "Manifest created successfully!")
+    const isRegistrationAccepted = await getConfirmation("Register the tapplet right now?")
+
+    if (isRegistrationAccepted) {
+      console.log("\x1b[42m%s\x1b[0m", "Registration process has started!")
+      await registerTapp()
+    } else {
+      console.log("To register the tapplet use 'tapp-registrant -r'")
+    }
+  } else {
+    console.log("Manifest file creation failed. Start the process over or create the manifest manually")
+  }
 }

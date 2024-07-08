@@ -8,7 +8,7 @@ import { getTappManifest } from "../helpers/index.js"
 import { PrPrefix } from "../types/index.js"
 
 export async function registerTapp() {
-  const { octokit, user } = await initOctokitAndGetAuthUser()
+  const { octokit } = await initOctokitAndGetAuthUser()
 
   // TODO adjust here the tapp-registry owner
   const owner = REGISTRY_OWNER
@@ -20,8 +20,6 @@ export async function registerTapp() {
 
   // note: branch name needs to be exactly like this for github workflows
   const branchName = `add/${tappletManifest.packageName}@${tappletManifest.version}`
-  console.log(`Branch name: ${branchName}`)
-  console.log(`Branch created by: ${user.login}`)
   try {
     const createdBranch = await createBranch({
       octokit,
@@ -64,7 +62,7 @@ export async function registerTapp() {
     const prPrexix: PrPrefix = "Add"
     const prTitle = `${prPrexix}/${tappletManifest.packageName}@${tappletManifest.version}`
     const pr = await createPullRequest({ octokit, owner, branchName, prTitle })
-    console.log("\x1b[42m%s\x1b[0m", "PR created successfully with status:", pr.status)
+    console.log("\x1b[42m%s\x1b[0m", `PR created successfully with status: ${pr.status}`)
   } catch (error) {
     console.log("\x1b[41m%s\x1b[0m", `PR creation failed!`)
     throw error

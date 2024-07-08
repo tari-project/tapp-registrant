@@ -1,6 +1,6 @@
 {
   "name": "tapp-registrant",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "main": "dist/index.js",
   "bin": {
     "tapp-registrant": "./dist/index.js"

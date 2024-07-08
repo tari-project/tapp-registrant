@@ -39,3 +39,11 @@ To register the Tapplet to the registry run
 ```
 tapp-registrant --register
 ```
+
+## Update process
+
+To update the Tapplet already register in the registry run
+
+```
+tapp-registrant --update
+```
