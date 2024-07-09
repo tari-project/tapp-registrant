@@ -1,8 +1,8 @@
-export function listRegisteredTapplets() {
+export function listRegisteredTapplets(name?: string) {
   //TODO
   try {
     const detailedFilesPromises = {
-      tapplet: "tapp-example",
+      tapplet: name ?? "tapp-example",
       version: "1.0.0",
       author: "karczuRF",
     }

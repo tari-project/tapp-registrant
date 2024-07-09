@@ -1,6 +1,6 @@
 {
   "name": "tapp-registrant",
-  "version": "1.0.12",
+  "version": "1.1.0",
   "main": "dist/index.js",
   "bin": {
     "tapp-registrant": "./dist/index.js"
@@ -13,7 +13,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npx tsc",
     "build-n-copy": "npm run build && copyfiles src/images/*.svg dist",
-    "init-tapp": "npx tsx src/index.ts -i",
+    "run-tool": "npx tsx src/index.ts",
     "lint": "eslint . --ext .ts"
   },
   "author": "karczuRF",
