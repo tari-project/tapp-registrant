@@ -1,5 +1,5 @@
 import https from "https"
-import { RegistryManifest } from "../types/registry.js"
+import { RegistryManifest, TappletsList } from "../types/registry.js"
 
 export function listRegisteredTapplets(name?: string) {
   // TODO change manifest source
@@ -23,7 +23,18 @@ export function listRegisteredTapplets(name?: string) {
             tapp
               ? console.table(tapp?.versions)
               : console.log("\x1b[41m%s\x1b[0m", `Not found any registered version of ${name}`)
-          } else console.table(registry.registeredTapplets, ["id", "versions"])
+          } else {
+            const tappletsList: TappletsList = {}
+            Object.keys(registry.registeredTapplets).forEach((packageName) => {
+              const tapplet = registry.registeredTapplets[packageName]
+              tappletsList[packageName] = {
+                id: tapplet.id,
+                displayName: tapplet.metadata.displayName,
+                versions: Object.keys(tapplet.versions),
+              }
+            })
+            console.table(tappletsList)
+          }
         } catch (error: unknown) {
           if (error instanceof Error) console.error(error.message)
         }

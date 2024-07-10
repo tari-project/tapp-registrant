@@ -76,7 +76,10 @@ export interface RegistryManifest {
   }
 }
 
-export interface RegistryUpdaterOutputs {
-  registeretTappsNr: number
-  registryManifestVer: string
+export interface TappletsList {
+  [packageName: string]: {
+    id: string
+    displayName: string
+    versions: string[]
+  }
 }
