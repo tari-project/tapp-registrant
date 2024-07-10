@@ -35,18 +35,16 @@ program
 program
   .command("deprecate")
   .description("Deprecate the given tapplet version")
-  .argument("<VERSION>", "tapplet version")
+  .argument("<version>", "tapplet version to deprecate")
   .action((version) => {
     deprecateTappVersion(version)
   })
 program
   .command("list")
   .description("List registered tapplets")
-  .option("[-n, --name <string>", "tapplet name")
-  .action((options) => {
-    const name = options.name ? `${options.name}` : "dupa"
-    console.log(`${name}`)
-    listRegisteredTapplets(options.name)
+  .argument("[name]", "(optional) tapplet name to find in the registry")
+  .action((name) => {
+    listRegisteredTapplets(name)
   })
 program
   .command("ghp")
