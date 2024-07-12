@@ -1,10 +1,7 @@
 # The Tapplet Registrant tool
 
-To check available options run
+The Tapplet Registrant is a simple tool that allows you to quickly register your tapplet in the Taru Universe Tapplets Registry.
 
-```
-tapp-registrant --help
-```
 
 ## Registration process
 
@@ -21,15 +18,15 @@ Make sure the GitHub Access Token is created and added to the `~/.npmrc` file. S
 To check npm package info run
 
 ```
-npm view <PACKAGE_NAME>
+npm view
 ```
 
 #### 3. Init Tapplet Manifest
 
-To create the Tapplet Manifest file run
+To init the Tapplet registration process run
 
 ```
-tapp-registrant --init
+tapp-registrant init
 ```
 
 #### 4. Register the tapplet to the Tapplets Registry
@@ -37,7 +34,7 @@ tapp-registrant --init
 To register the Tapplet to the registry run
 
 ```
-tapp-registrant --register
+tapp-registrant register
 ```
 
 ## Update process
@@ -45,5 +42,21 @@ tapp-registrant --register
 To update the Tapplet already register in the registry run
 
 ```
-tapp-registrant --update
+tapp-registrant update
+```
+
+## Deprecate process
+
+To deprecate the given tapplet version run
+
+```
+tapp-registrant deprecate <version>
+```
+
+## More
+
+To see all available commands run
+
+```
+tapp-registrant
 ```
