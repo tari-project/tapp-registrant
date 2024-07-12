@@ -1,6 +1,8 @@
 import { checkbox, input, select, confirm } from "@inquirer/prompts"
 import inquirer from "inquirer"
 import {
+  InitProgramAction,
+  ManifestAction,
   SupportedChain,
   TappCategory,
   TappStatus,
@@ -214,5 +216,28 @@ export async function getConfirmation(message = "OK?", defaultValue = false) {
   return await confirm({
     message,
     default: defaultValue,
+  })
+}
+
+export async function initTapplet(): Promise<InitProgramAction> {
+  return await select({
+    message: "What do you want to do?",
+    choices: [
+      {
+        name: "Create an empty tapplet.manifest.json",
+        value: ManifestAction.CREATE_EMPTY_MANIFEST,
+        description: "Creates an empty tapplet.manifest.json",
+      },
+      {
+        name: "Create and fill out the tapplet.manifest.json",
+        value: ManifestAction.CREATE_AND_FILL_MANIFEST,
+        description: "Creates and helps fill out the tapplet.manifest.json",
+      },
+      {
+        name: "Quit",
+        value: ManifestAction.QUIT,
+        description: "Quit the program",
+      },
+    ],
   })
 }

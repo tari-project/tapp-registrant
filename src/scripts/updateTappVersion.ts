@@ -43,7 +43,7 @@ export async function updateTappVersion() {
       console.log("\x1b[42m%s\x1b[0m", "Registration process has started!")
       await registerTapp()
     } else {
-      console.log("To register the tapplet use 'tapp-registrant -r'")
+      console.log("To register the tapplet use 'tapp-registrant register'")
     }
   } else {
     console.log("Manifest file creation failed. Start the process over or create the manifest manually")

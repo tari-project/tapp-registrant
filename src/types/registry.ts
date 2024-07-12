@@ -1,3 +1,5 @@
+import { SupportedChain } from "./tapplet.js"
+
 interface Author {
   name: string
   website: string
@@ -10,7 +12,7 @@ interface About {
 
 interface Audits {
   auditor: string
-  report: string
+  reportUrl: string
 }
 interface Design {
   logoPath: string
@@ -23,17 +25,15 @@ interface Repository {
   codeowners: string[]
 }
 
-interface SourceLocationNpm {
-  npm: {
-    packageName: string
-    registry: string
-    distTarball: string
-    integrity: string
-  }
+interface Location {
+  packageName: string
+  registry: string
+  distTarball: string
+  integrity: string
 }
 
 interface Source {
-  location: SourceLocationNpm
+  location: Record<"npm", Location>
 }
 
 export interface TappletManifest {
@@ -48,6 +48,7 @@ export interface TappletManifest {
   design: Design
   repository: Repository
   source: Source
+  supportedChain: SupportedChain[]
   manifestVersion: string
 }
 
