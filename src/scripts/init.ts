@@ -1,6 +1,6 @@
 import { initTapplet } from "../helpers/cli.js"
 import { ManifestAction } from "../types/tapplet.js"
-import { createManifest } from "./createManifest.js"
+import { createAndFillInManifest } from "./createAndFillInManifest.js"
 import { writeEmptyManifest } from "./writeEmptyManifest.js"
 
 export async function init(): Promise<void> {
@@ -10,7 +10,7 @@ export async function init(): Promise<void> {
     return
   }
   if (initAction === ManifestAction.CREATE_AND_FILL_MANIFEST) {
-    createManifest()
+    createAndFillInManifest()
     return
   }
   return

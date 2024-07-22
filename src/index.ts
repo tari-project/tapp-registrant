@@ -1,11 +1,12 @@
 #! /usr/bin/env node
 import { Command } from "commander"
 import {
-  createManifest,
+  createAndFillInManifest,
   deprecateTappVersion,
   listRegisteredTapplets,
   registerTapp,
   updateTappVersion,
+  validateJsonSchema,
 } from "./scripts/index.js"
 import figlet from "figlet"
 import { getGhp } from "./helpers/getGhp.js"
@@ -33,7 +34,7 @@ program
   .command("fill-in")
   .description("Create and fill in the manifest file")
   .action(() => {
-    createManifest()
+    createAndFillInManifest()
   })
 program
   .command("register")
@@ -66,6 +67,12 @@ program
   .description("Find and add GitHub Access Token")
   .action(() => {
     getGhp()
+  })
+program
+  .command("validate-manifest")
+  .description("Validate json manifest file if it contains all required fields")
+  .action(() => {
+    validateJsonSchema()
   })
 
 program.parse()

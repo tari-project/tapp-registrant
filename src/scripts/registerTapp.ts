@@ -6,14 +6,21 @@ import { BASE_BRANCH, MANIFEST_FILE, REGISTRY_OWNER, SRC_DIR, TAPPLET_REGISTRY_R
 import { createBranch, createFile, createPullRequest, initOctokitAndGetAuthUser } from "../helpers/repo.js"
 import { getTappManifest } from "../helpers/index.js"
 import { PrPrefix } from "../types/index.js"
+import { validateJsonSchema } from "./validateJsonSchema.js"
 
-export async function registerTapp() {
+export async function registerTapp(): Promise<void> {
   const { octokit } = await initOctokitAndGetAuthUser()
 
   // TODO adjust here the tapp-registry owner
   const owner = REGISTRY_OWNER
   if (!owner) {
     throw new Error("Registration error: owner not found")
+  }
+
+  // validate manifest
+  const isJsonValid = validateJsonSchema()
+  if (!isJsonValid) {
+    throw new Error("Invalid tapplet.manifest.json file!")
   }
 
   const tappletManifest = getTappManifest()

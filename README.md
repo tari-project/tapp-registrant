@@ -29,6 +29,14 @@ To init the Tapplet registration process run
 tapp-registrant init
 ```
 
+#### 4. Validate Manifest file
+
+To validate the Tapplet manifest file run
+
+```
+tapp-registrant validate-manifest
+```
+
 #### 4. Register the tapplet to the Tapplets Registry
 
 To register the Tapplet to the registry run

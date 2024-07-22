@@ -25,7 +25,7 @@ import { getPackageJson, writeManifestFile } from "../helpers/readWriteJson.js"
 import { writeEmptyManifest } from "./writeEmptyManifest.js"
 import { getPackageDist } from "./getPackageDist.js"
 
-export async function createManifest() {
+export async function createAndFillInManifest() {
   try {
     const { user } = await initOctokitAndGetAuthUser()
 
