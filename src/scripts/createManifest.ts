@@ -15,6 +15,7 @@ import {
   getManifestVersion,
   getPackageName,
   getPackageVersion,
+  getPermissions,
   getRegistryUrl,
   getStatus,
   getSummary,
@@ -49,6 +50,7 @@ export async function createManifest() {
     manifest.source.location.npm.distTarball = await getDistTarball(packageDist.tarball)
     manifest.source.location.npm.integrity = await getIntegrity(packageDist.integrity)
     manifest.supportedChain = await getSupportedChains()
+    manifest.permissions = await getPermissions()
     manifest.manifestVersion = await getManifestVersion()
 
     console.log("About to create manifest")

@@ -10,6 +10,7 @@ import {
   integrityPattern,
   versionPattern,
 } from "../types/index.js"
+import { permissions } from "@tariproject/tarijs"
 
 export async function getPackageName(defaultValue = "package-name") {
   return await input({
@@ -229,9 +230,9 @@ export async function initTapplet(): Promise<InitProgramAction> {
         description: "Creates an empty tapplet.manifest.json",
       },
       {
-        name: "Create and fill out the tapplet.manifest.json",
+        name: "Create and fill in the tapplet.manifest.json",
         value: ManifestAction.CREATE_AND_FILL_MANIFEST,
-        description: "Creates and helps fill out the tapplet.manifest.json",
+        description: "Creates an tapplet.manifest.json file and helps fill in the required fields",
       },
       {
         name: "Quit",
@@ -239,5 +240,69 @@ export async function initTapplet(): Promise<InitProgramAction> {
         description: "Quit the program",
       },
     ],
+  })
+}
+
+export async function getPermissions(): Promise<permissions[]> {
+  return await checkbox({
+    message: "Select all permissions required by the tapplet",
+    choices: [
+      {
+        name: "NftGetOwnershipProof",
+        value: "TariPermissionNftGetOwnershipProof",
+        checked: false,
+      },
+      {
+        name: "AccountBalance",
+        value: "TariPermissionAccountBalance",
+        checked: false,
+      },
+      {
+        name: "AccountInfo",
+        value: "TariPermissionAccountInfo",
+        checked: false,
+      },
+      {
+        name: "AccountList",
+        value: "TariPermissionAccountList",
+        checked: false,
+      },
+      {
+        name: "KeyList",
+        value: "TariPermissionKeyList",
+        checked: false,
+      },
+      {
+        name: "TransactionGet",
+        value: "TariPermissionTransactionGet",
+        checked: false,
+      },
+      {
+        name: "TransactionSend",
+        value: "TariPermissionTransactionSend",
+        checked: false,
+      },
+      {
+        name: "GetNft",
+        value: "TariPermissionGetNft",
+        checked: false,
+      },
+      {
+        name: "TransactionsGet",
+        value: "TariPermissionTransactionsGet",
+        checked: false,
+      },
+      {
+        name: "SubstatesRead",
+        value: "TariPermissionSubstatesRead",
+        checked: false,
+      },
+      {
+        name: "TemplatesRead",
+        value: "TariPermissionTemplatesRead",
+        checked: false,
+      },
+    ],
+    instructions: true,
   })
 }

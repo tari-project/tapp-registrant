@@ -49,6 +49,7 @@ export interface TappletManifest {
   repository: Repository
   source: Source
   supportedChain: SupportedChain[]
+  permissions: string[]
   manifestVersion: string
 }
 

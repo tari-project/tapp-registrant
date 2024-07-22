@@ -27,6 +27,7 @@
   "dependencies": {
     "@inquirer/prompts": "^5.0.6",
     "@octokit/types": "^13.5.0",
+    "@tariproject/tarijs": "^0.1.19",
     "@types/figlet": "^1.5.8",
     "@types/inquirer": "^9.0.7",
     "@types/node": "^20.14.2",
