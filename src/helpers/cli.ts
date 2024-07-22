@@ -10,7 +10,7 @@ import {
   integrityPattern,
   versionPattern,
 } from "../types/index.js"
-import { permissions } from "@tariproject/tarijs"
+import { TariPermission } from "../types/tariPermissions.js"
 
 export async function getPackageName(defaultValue = "package-name") {
   return await input({
@@ -243,7 +243,7 @@ export async function initTapplet(): Promise<InitProgramAction> {
   })
 }
 
-export async function getPermissions(): Promise<permissions[]> {
+export async function getPermissions(): Promise<TariPermission[]> {
   return await checkbox({
     message: "Select all permissions required by the tapplet",
     choices: [

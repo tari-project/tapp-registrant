@@ -1,6 +1,6 @@
-import { Ajv } from "ajv"
 import { tappletManifestSchema } from "../types/manifestJsonSchema/tappletManifestSchema.js"
 import { getTappManifest } from "../helpers/readWriteJson.js"
+import { Ajv } from "ajv"
 
 export function validateJsonSchema(): boolean {
   const ajv = new Ajv()
