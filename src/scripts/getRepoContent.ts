@@ -16,12 +16,12 @@ export async function getRepoContentSha(params: GetRepoContentArgs, octokit: Oct
       branch: params.branch,
     })
     if (response.status === 200) {
-      console.log(`The ${params.filePath} SHA:", ${response.data.sha}`)
+      console.log(`The ${params.filePath} SHA:, ${response.data.sha}`)
       return response.data.sha
     }
   } catch (error: any) {
     if (error.status === 404) {
-      console.log(`The ${params.filePath} not found"`)
+      console.log(`The ${params.filePath} not found`)
       return undefined
     } else {
       throw error

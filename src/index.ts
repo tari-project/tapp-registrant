@@ -17,7 +17,7 @@ import { writeEmptyManifest } from "./scripts/writeEmptyManifest.js"
 console.log(figlet.textSync("TAPPLET REGISTRANT"))
 
 const program = new Command()
-program.name("tapp-registrant").version("1.1.3").description("The tapplet registration tool")
+program.name("tapp-registrant").version("1.1.5").description("The tapplet registration tool")
 program
   .command("init")
   .description("Init the tapplet registration process")

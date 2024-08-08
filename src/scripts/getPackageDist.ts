@@ -2,9 +2,10 @@ import * as childProcess from "child_process"
 import { getPackageJson } from "../helpers/index.js"
 import { NpmPackageDist } from "../types/index.js"
 
-export async function getPackageDist(packageName?: string): Promise<NpmPackageDist> {
+export async function getPackageDist(packageName?: string, version?: string): Promise<NpmPackageDist> {
   const _name = packageName ?? getPackageJson().name
-  const npmCommand = `npm view ${_name} --json`
+  const _nameVersion = version ? `${_name}@${version}` : `${_name}`
+  const npmCommand = `npm view ${_nameVersion} --json`
   const output = childProcess.execSync(npmCommand)
   const jsonOutput = JSON.parse(output.toString())
 
