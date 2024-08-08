@@ -14,7 +14,6 @@
     "build": "npx tsc",
     "build-n-copy": "npm run build && copyfiles src/images/*.svg dist",
     "run-tool": "npx tsx src/index.ts",
-    "validate-manifest": "npx tsx src/scripts/validateJsonSchema.ts",
     "lint": "eslint . --ext .ts"
   },
   "author": "karczuRF",
