@@ -22,6 +22,7 @@ export type NpmPackageJson = {
   version: string
   author: string
   licence: string
+  description: string
 }
 
 export interface NpmPackageDist {
