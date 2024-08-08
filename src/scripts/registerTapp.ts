@@ -69,9 +69,10 @@ export async function registerTapp(): Promise<void> {
     const prPrexix: PrPrefix = "Add"
     const prTitle = `${prPrexix}/${tappletManifest.packageName}@${tappletManifest.version}`
     const pr = await createPullRequest({ octokit, owner, branchName, prTitle })
-    console.log("\x1b[42m%s\x1b[0m", `PR created successfully with status: ${pr.status}`)
+    console.log("\x1b[42m%s\x1b[0m", `${TAPPLET_REGISTRY_REPO}: PR created successfully with status: ${pr.status}`)
+    console.log(`See: ${pr.url}`)
   } catch (error) {
-    console.log("\x1b[41m%s\x1b[0m", `PR creation failed!`)
+    console.log("\x1b[41m%s\x1b[0m", `${TAPPLET_REGISTRY_REPO}: PR creation failed!`)
     throw error
   }
 }

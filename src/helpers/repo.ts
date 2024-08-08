@@ -70,8 +70,13 @@ export async function initOctokitAndGetAuthUser() {
     auth: process.env.GITHUB_ACCESS_TOKEN,
   })
 
-  const user = await getAuthenticatedUser({ octokit })
-  return { octokit, user }
+  try {
+    const user = await getAuthenticatedUser({ octokit })
+    return { octokit, user }
+  } catch (e) {
+    console.log(e)
+    throw new Error("Failed to get Authenticated User")
+  }
 }
 
 export async function getSha(owner: string, filePath: string, octokit: Octokit): Promise<string> {
