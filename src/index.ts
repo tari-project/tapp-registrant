@@ -13,11 +13,13 @@ import { getGhp } from "./helpers/getGhp.js"
 
 import { init } from "./scripts/init.js"
 import { writeEmptyManifest } from "./scripts/writeEmptyManifest.js"
+import { getPackageJson } from "./helpers/index.js"
 
 console.log(figlet.textSync("TAPPLET REGISTRANT"))
 
 const program = new Command()
-program.name("tapp-registrant").version("1.1.3").description("The tapplet registration tool")
+const packageJson = getPackageJson()
+program.name(`${packageJson.name}`).version(`${packageJson.version}`).description(`${packageJson.description}`)
 program
   .command("init")
   .description("Init the tapplet registration process")

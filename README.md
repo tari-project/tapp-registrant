@@ -15,11 +15,13 @@ Make sure the GitHub Access Token is created and added to the `~/.npmrc` file. S
 
 #### 2. Create and publish npm package
 
-To check npm package info run
+To [view registry info](https://docs.npmjs.com/cli/v10/commands/npm-view) run
 
 ```
 npm view
 ```
+_Note:_ The tapplet version in the `tapplet.manifest.json` and `package.json` must be the same.
+
 
 #### 3. Init Tapplet Manifest
 

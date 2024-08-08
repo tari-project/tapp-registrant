@@ -72,6 +72,7 @@ export async function createAndFillInManifest() {
       console.log("Manifest file creation failed. Start the process over or create the manifest manually")
     }
   } catch (err) {
+    console.log(err)
     console.log("\x1b[41m%s\x1b[0m", "Manifest file creation failed")
   }
 }

@@ -5,6 +5,8 @@ dist
 # Ignore all private files with exceptions
 .*
 !.gitignore
+!.prettierrc
+!.prettierignore
 
 # IDE - VSCode
 .vscode/*
