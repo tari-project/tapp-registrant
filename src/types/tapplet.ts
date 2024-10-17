@@ -1,6 +1,9 @@
 export const imagesPathPattern = new RegExp("^.*/images/[^/]+.svg$")
-export const versionPattern = new RegExp("^([1-9]d*|0)(.(([1-9]d*)|0)){2}$")
 export const integrityPattern = new RegExp("^sha[1-9][0-9]{0,2}-([A-Za-z0-9+/=]{86})==$")
+// https://semver.org/#is-there-a-suggested-regular-expression-regex-to-check-a-semver-string
+export const versionPattern = new RegExp(
+  /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$/gm
+)
 
 export type TappCategory = "TEST" | "USER" | "OTHER" | ""
 export type TappStatus = "WIP" | "TEST" | "PROD" | "DEPRECATED" | ""

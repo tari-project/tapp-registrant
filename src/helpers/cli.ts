@@ -23,6 +23,7 @@ export async function getPackageVersion(defaultValue = "1.0.0") {
   return await input({
     message: "Enter tapplet version",
     default: defaultValue,
+    validate: (input) => versionPattern.test(input) ?? "provided version is invalid",
   })
 }
 
