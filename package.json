@@ -12,9 +12,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npx tsc",
-    "build-n-copy": "npm run build && copyfiles src/images/*.svg dist",
-    "run-tool": "npx tsx src/index.ts",
-    "lint": "eslint . --ext .ts"
+    "run-tool": "npx tsx src/index.ts"
   },
   "author": "karczuRF",
   "license": "ISC",
