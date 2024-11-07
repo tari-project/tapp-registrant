@@ -322,7 +322,3 @@ export class TariPermissions {
     return this.permissions
   }
 }
-
-// TariPermissionType.prototype.toString = function () {
-//   return "wtf"
-// }

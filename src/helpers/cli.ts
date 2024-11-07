@@ -243,9 +243,9 @@ export async function initTapplet(): Promise<InitProgramAction> {
   })
 }
 
-export async function getPermissions(): Promise<TariPermission[]> {
+export async function getPermissions(message?: string): Promise<TariPermission[]> {
   return await checkbox({
-    message: "Select all permissions required by the tapplet",
+    message: message ?? "Select all permissions required by the tapplet",
     choices: [
       {
         name: "NftGetOwnershipProof",

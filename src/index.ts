@@ -14,6 +14,7 @@ import { getGhp } from "./helpers/getGhp.js"
 import { init } from "./scripts/init.js"
 import { writeEmptyManifest } from "./scripts/writeEmptyManifest.js"
 import { getPackageJson } from "./helpers/index.js"
+import { createAndFillInTappConfig } from "./scripts/createAndFillInTappConfig.js"
 
 console.log(figlet.textSync("TAPPLET REGISTRANT"))
 
@@ -75,6 +76,12 @@ program
   .description("Validate json manifest file if it contains all required fields")
   .action(() => {
     validateJsonSchema()
+  })
+program
+  .command("create-config")
+  .description("Create and fill in the tapplet config file")
+  .action(() => {
+    createAndFillInTappConfig()
   })
 
 program.parse()
