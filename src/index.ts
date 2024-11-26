@@ -28,16 +28,22 @@ program
     init()
   })
 program
-  .command("create")
+  .command("add-manifest")
   .description("Create an empty manifest file")
   .action(() => {
     writeEmptyManifest()
   })
 program
-  .command("fill-in")
+  .command("fill-manifest")
   .description("Create and fill in the manifest file")
   .action(() => {
     createAndFillInManifest()
+  })
+program
+  .command("check-manifest")
+  .description("Validate json manifest file if it contains all required fields")
+  .action(() => {
+    validateJsonSchema()
   })
 program
   .command("register")
@@ -66,22 +72,16 @@ program
     listRegisteredTapplets(name)
   })
 program
+  .command("add-config")
+  .description("Create and fill in the tapplet config file")
+  .action(() => {
+    createAndFillInTappConfig()
+  })
+program
   .command("ghp")
   .description("Find and add GitHub Access Token")
   .action(() => {
     getGhp()
-  })
-program
-  .command("validate-manifest")
-  .description("Validate json manifest file if it contains all required fields")
-  .action(() => {
-    validateJsonSchema()
-  })
-program
-  .command("create-config")
-  .description("Create and fill in the tapplet config file")
-  .action(() => {
-    createAndFillInTappConfig()
   })
 
 program.parse()

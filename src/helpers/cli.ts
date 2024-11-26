@@ -235,6 +235,11 @@ export async function initTapplet(): Promise<InitProgramAction> {
         description: "Creates an tapplet.manifest.json file and helps fill in the required fields",
       },
       {
+        name: "Create and fill in the tapplet.config.json",
+        value: ManifestAction.CREATE_CONFIG,
+        description: "Creates an tapplet.config.json file and helps fill in the required fields",
+      },
+      {
         name: "Quit",
         value: ManifestAction.QUIT,
         description: "Quit the program",

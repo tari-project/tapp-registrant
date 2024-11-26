@@ -9,12 +9,14 @@ export type SupportedChain = "MAINNET" | "STAGENET" | "NEXTNET" | ""
 export enum ManifestAction {
   CREATE_EMPTY_MANIFEST,
   CREATE_AND_FILL_MANIFEST,
+  CREATE_CONFIG,
   QUIT,
 }
 
 export type InitProgramAction =
   | ManifestAction.CREATE_EMPTY_MANIFEST
   | ManifestAction.CREATE_AND_FILL_MANIFEST
+  | ManifestAction.CREATE_CONFIG
   | ManifestAction.QUIT
 
 export type NpmPackageJson = {
