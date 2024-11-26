@@ -6,8 +6,10 @@ export function writeEmptyTappConfig(): TappletConfig {
     packageName: "",
     version: "",
     supportedChain: [],
-    requiredPermissions: [],
-    optionalPermissions: [],
+    permissions: {
+      requiredPermissions: [],
+      optionalPermissions: [],
+    },
   }
   writeConfigFile(config)
   console.log("\x1b[42m%s\x1b[0m", "An empty tapp config file created successfully!")

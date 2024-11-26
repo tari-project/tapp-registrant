@@ -16,8 +16,8 @@ export async function createAndFillInTappConfig() {
     config.packageName = await getPackageName(packageJson.name)
     config.version = await getPackageVersion(packageJson.version)
     config.supportedChain = await getSupportedChains()
-    config.requiredPermissions = await getPermissions()
-    config.optionalPermissions = await getPermissions("Select all optional permissions")
+    config.permissions.requiredPermissions = await getPermissions()
+    config.permissions.optionalPermissions = await getPermissions("Select all optional permissions")
 
     console.log("About to create tapplet config")
     console.log(config)
