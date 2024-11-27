@@ -1,5 +1,5 @@
 import { SupportedChain, TariPermission } from "./index.js"
-interface TappletPermissions {
+export interface TappletPermissions {
   requiredPermissions: TariPermission[]
   optionalPermissions: TariPermission[]
 }

@@ -28,13 +28,13 @@ program
     init()
   })
 program
-  .command("add-manifest")
+  .command("init-manifest")
   .description("Create an empty manifest file")
   .action(() => {
     writeEmptyManifest()
   })
 program
-  .command("fill-manifest")
+  .command("add-manifest")
   .description("Create and fill in the manifest file")
   .action(() => {
     createAndFillInManifest()

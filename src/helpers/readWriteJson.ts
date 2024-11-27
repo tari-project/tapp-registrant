@@ -32,7 +32,13 @@ export function removeManifestFile(): void {
 
 export function writeConfigFile(config: TappletConfig): void {
   const json = JSON.stringify(config, null, 2)
-  const file = path.join(SRC_DIR, TAPP_CONFIG_FILE)
 
-  fs.writeFileSync(file, json)
+  fs.writeFileSync(TAPP_CONFIG_FILE, json)
+}
+
+export function getManifestJson(): TappletConfig {
+  const packagePath = path.resolve("tapplet.config.json")
+
+  const packageData = fs.readFileSync(packagePath, "utf8")
+  return JSON.parse(packageData)
 }

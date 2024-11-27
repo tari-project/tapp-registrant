@@ -1,3 +1,4 @@
+import { TappletPermissions } from "./index.js"
 import { SupportedChain } from "./tapplet.js"
 import { TariPermission } from "./tariPermissions.js"
 
@@ -50,7 +51,7 @@ export interface TappletManifest {
   repository: Repository
   source: Source
   supportedChain: SupportedChain[]
-  permissions: TariPermission[]
+  permissions: TappletPermissions
   manifestVersion: string
 }
 
