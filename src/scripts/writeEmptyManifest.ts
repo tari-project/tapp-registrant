@@ -42,7 +42,10 @@ export function writeEmptyManifest(): TappletManifest {
       },
     },
     supportedChain: [],
-    permissions: [],
+    permissions: {
+      requiredPermissions: [],
+      optionalPermissions: [],
+    },
     manifestVersion: "",
   }
   writeManifestFile(manifest)

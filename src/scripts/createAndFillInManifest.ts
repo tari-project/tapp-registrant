@@ -21,7 +21,7 @@ import {
   getSummary,
   getSupportedChains,
 } from "../helpers/cli.js"
-import { getPackageJson, writeManifestFile } from "../helpers/readWriteJson.js"
+import { getManifestJson, getPackageJson, writeManifestFile } from "../helpers/readWriteJson.js"
 import { writeEmptyManifest } from "./writeEmptyManifest.js"
 import { getPackageDist } from "./getPackageDist.js"
 
@@ -32,6 +32,7 @@ export async function createAndFillInManifest() {
     const manifest = writeEmptyManifest()
     const packageJson = getPackageJson()
     const packageDist = await getPackageDist()
+    const tappConfig = getManifestJson()
 
     manifest.packageName = await getPackageName(packageJson.name)
     manifest.version = await getPackageVersion(packageJson.version)
@@ -49,8 +50,19 @@ export async function createAndFillInManifest() {
     manifest.source.location.npm.registry = await getRegistryUrl()
     manifest.source.location.npm.distTarball = await getDistTarball(packageDist.tarball)
     manifest.source.location.npm.integrity = await getIntegrity(packageDist.integrity)
-    manifest.supportedChain = await getSupportedChains()
-    manifest.permissions = await getPermissions()
+    const isConfigChainAccepted = await getConfirmation("Copy Supported Chains from the config file?", true)
+    if (isConfigChainAccepted) {
+      manifest.supportedChain = tappConfig.supportedChain
+    } else {
+      manifest.supportedChain = await getSupportedChains()
+    }
+    const isConfigPermissionAccepted = await getConfirmation("Copy Tapplet Permissions from the config file?", true)
+    if (isConfigPermissionAccepted) {
+      manifest.permissions = tappConfig.permissions
+    } else {
+      manifest.permissions.requiredPermissions = await getPermissions()
+      manifest.permissions.optionalPermissions = await getPermissions("Select all optional permissions")
+    }
     manifest.manifestVersion = await getManifestVersion()
 
     console.log("About to create manifest")

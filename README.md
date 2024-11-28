@@ -13,6 +13,12 @@ Make sure the GitHub Access Token is created and added to the `~/.npmrc` file. S
 //npm.pkg.github.com/:_authToken=TOKEN
 ```
 
+To add the GitHyb Access Token run
+
+```
+tapp-registrant ghp
+```
+
 #### 2. Create and publish npm package
 
 To [view registry info](https://docs.npmjs.com/cli/v10/commands/npm-view) run
@@ -36,7 +42,7 @@ tapp-registrant init
 To validate the Tapplet manifest file run
 
 ```
-tapp-registrant validate-manifest
+tapp-registrant check-manifest
 ```
 
 #### 4. Register the tapplet to the Tapplets Registry

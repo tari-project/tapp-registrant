@@ -14,6 +14,7 @@ import { getGhp } from "./helpers/getGhp.js"
 import { init } from "./scripts/init.js"
 import { writeEmptyManifest } from "./scripts/writeEmptyManifest.js"
 import { getPackageJson } from "./helpers/index.js"
+import { createAndFillInTappConfig } from "./scripts/createAndFillInTappConfig.js"
 
 console.log(figlet.textSync("TAPPLET REGISTRANT"))
 
@@ -27,16 +28,22 @@ program
     init()
   })
 program
-  .command("create")
+  .command("init-manifest")
   .description("Create an empty manifest file")
   .action(() => {
     writeEmptyManifest()
   })
 program
-  .command("fill-in")
+  .command("add-manifest")
   .description("Create and fill in the manifest file")
   .action(() => {
     createAndFillInManifest()
+  })
+program
+  .command("check-manifest")
+  .description("Validate json manifest file if it contains all required fields")
+  .action(() => {
+    validateJsonSchema()
   })
 program
   .command("register")
@@ -65,16 +72,16 @@ program
     listRegisteredTapplets(name)
   })
 program
+  .command("add-config")
+  .description("Create and fill in the tapplet config file")
+  .action(() => {
+    createAndFillInTappConfig()
+  })
+program
   .command("ghp")
   .description("Find and add GitHub Access Token")
   .action(() => {
     getGhp()
-  })
-program
-  .command("validate-manifest")
-  .description("Validate json manifest file if it contains all required fields")
-  .action(() => {
-    validateJsonSchema()
   })
 
 program.parse()
